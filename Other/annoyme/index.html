@@ -61,16 +61,16 @@ const button = document.getElementById('annoy-button');
 button.addEventListener('click', function() {
 setInterval(() => {
 alert('Are you annoyed yet?');
-}, 3000);
+}, 2000);
 
 setInterval(() => {
 button.style.left = Math.floor(Math.random() * (window.innerWidth - button.clientWidth)) + 'px';
 button.style.top = Math.floor(Math.random() * (window.innerHeight - button.clientHeight)) + 'px';
-}, 1000);
+}, 100);
 
 setInterval(() => {
 document.body.style.backgroundColor = rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5);
-}, 200);
+}, 100);
 
 if (Notification.permission === "granted") {
 setInterval(() => {
