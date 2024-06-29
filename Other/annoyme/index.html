@@ -17,7 +17,6 @@ height: 100vh;
 margin: 0;
 padding: 20px;
 overflow: hidden; /* Prevent scrolling */
-z-index: 1;
 }
 .button {
 background-color: #39C16C;
@@ -28,7 +27,11 @@ padding: 15px 25px;
 cursor: pointer;
 font-size: 1em;
 text-align: center;
-z-index: 2;
+z-index: 2; /* Ensure button is above text */
+position: absolute;
+}
+.text {
+z-index: 1; /* Ensure text is above background but below button */
 }
 .video-background {
 position: fixed;
@@ -46,6 +49,7 @@ z-index: -1;
 <source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
+<p class="text">Welcome to the AnnoyMe page!</p>
 <button class="button" id="annoy-button">Annoy Me</button>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -65,7 +69,7 @@ button.style.top = Math.floor(Math.random() * (window.innerHeight - button.clien
 }, 1000);
 
 setInterval(() => {
-document.body.style.backgroundColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+document.body.style.backgroundColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
 }, 200);
 
 if (Notification.permission === "granted") {
