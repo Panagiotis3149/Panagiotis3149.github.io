@@ -49,8 +49,9 @@ font-weight: bold;
 background-color: rgba(255, 255, 255, 0.8);
 border: 1px solid #cccccc;
 border-radius: 10px;
-padding: 10px;
+padding: 20px;
 margin-bottom: 20px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 .role {
 border-radius: 20px;
@@ -58,6 +59,7 @@ padding: 5px 10px;
 display: inline-block;
 margin-right: 10px;
 margin-bottom: 10px;
+border: 1px solid #000000;
 }
 .buttons {
 display: flex;
@@ -80,21 +82,19 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background-image: url('Cmask.png');
-background-size: cover;
-background-repeat: no-repeat;
-background-attachment: fixed;
+background-color: rgba(0, 0, 0, 0.8);
 display: none;
 justify-content: center;
 align-items: center;
 z-index: 1000;
 }
 .overlay-content {
-background-color: rgba(255, 255, 255, 0.8);
+background-color: rgba(255, 255, 255, 0.9);
 padding: 20px;
 border-radius: 10px;
 text-align: center;
 color: #000000;
+border: 2px solid black;
 }
 .close-btn {
 background-color: #39C16C;
@@ -162,7 +162,6 @@ document.getElementById(id).style.display = 'none';
 }
 function copyToClipboard(text) {
 navigator.clipboard.writeText(text).then(function() {
-[]
 alert('Copied to clipboard: ' + text);
 }, function(err) {
 alert('Failed to copy text: ' + err);
