@@ -14,7 +14,7 @@ flex-direction: column;
 align-items: center;
 margin: 0;
 padding: 20px;
-overflow = shown;
+overflow: hidden; /* Prevent scrolling */
 }
 .container {
 background-color: rgba(169, 169, 169, 0.8); /* More gray */
@@ -25,6 +25,7 @@ width: 80%;
 max-width: 1000px;
 margin-top: 20px;
 text-align: center;
+z-index: 1; /* Ensure content is above the video */
 }
 .project-title {
 font-size: 2em;
@@ -87,7 +88,7 @@ z-index: -1;
 </head>
 <body>
 <video class="video-background" autoplay muted loop>
-<source src="https://www.dropbox.com/s/c0wi9gik5gwvxxd6ekty8/bg.mp4?raw=1" type="video/mp4">
+<source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
 <div class="container">
