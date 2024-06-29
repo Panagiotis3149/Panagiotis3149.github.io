@@ -121,11 +121,8 @@ Your browser does not support the video tag.
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-const dangerZone = document.getElementById('danger-zone');
-dangerZone.scrollIntoView({ behavior: 'smooth' });
-
 const video = document.querySelector('.video-background');
-video.currentTime = 5;
+video.currentTime = 0;
 video.play();
 });
 </script>
