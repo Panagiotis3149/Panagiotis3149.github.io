@@ -22,7 +22,7 @@ border: 1px solid #000000;
 border-radius: 10px;
 padding: 30px;
 width: 80%;
-max-width: 800px;
+max-width: 1000px;
 margin-top: 20px;
 text-align: center;
 z-index: 1; /* Ensure content is above the video */
@@ -160,11 +160,17 @@ Your browser does not support the video tag.
 <button class="close-btn" onclick="hideOverlay('discord')">Close</button>
 </div>
 </div>
+<div id="???" class="overlay">
+<div class="overlay-content">
+<p>Content for ???</p>
+[]
+<button class="close-btn" onclick="hideOverlay('???')">Close</button>
+</div>
+</div>
 <script>
 function showOverlay(id) {
 document.getElementById(id).style.display = 'flex';
 }
-[]
 function hideOverlay(id) {
 document.getElementById(id).style.display = 'none';
 }
