@@ -36,11 +36,11 @@ margin-bottom: 20px;
 }
 .project-row {
 display: flex;
-justify-content: space-between;
+justify-content: space-around;
 margin-bottom: 20px;
 }
 .project-text, .project-button {
-background-color: #f2f2f2;
+background-color: #39C16C;
 color: black;
 border: 1px solid #000000;
 border-radius: 5px;
@@ -51,7 +51,6 @@ margin: 0 10px;
 }
 .project-button {
 cursor: pointer;
-background-color: #39C16C;
 }
 .unavailable {
 background-color: #d3d3d3;
@@ -62,6 +61,9 @@ cursor: not-allowed;
 font-weight: bold;
 color: red;
 margin-top: 20px;
+background-color: #ff6666;
+padding: 10px;
+border-radius: 5px;
 }
 .random-text {
 display: inline-block;
@@ -72,26 +74,26 @@ display: inline-block;
 <div class="container">
 <p class="project-title">My Projects</p>
 <div class="project-row">
-<span class="project-text unavailable">Neoclient</span>
-<span class="project-text unavailable">Assembled Piano</span>
+<span class="project-text">Neoclient</span>
+<span class="project-text">Assembled Piano</span>
 </div>
 <div class="project-row">
 <span class="project-button">Private!</span>
 <span class="project-button">Coming soon!</span>
 </div>
 <div class="project-row">
-<span class="project-text unavailable">My Rvn clients</span>
-<span class="project-text unavailable">???</span>
+<span class="project-text">My Rvn clients</span>
+<span class="project-text">???</span>
 </div>
 <div class="project-row">
 <span class="project-button">Soon</span>
 <span class="random-text" id="random-text-1">&kPlaceholder&r</span>
 </div>
-<p class="danger-zone">DANGER ZONE</p>
+<p class="danger-zone" id="danger-zone">DANGER ZONE</p>
 <p>Malware for educational purposes.</p>
 <p>I am not responsible for any damages.</p>
 <div class="project-row">
-<span class="project-text unavailable">???</span>
+<span class="project-text">???</span>
 <span class="random-text" id="random-text-2">&kPlaceholder&r</span>
 </div>
 </div>
@@ -103,6 +105,9 @@ randomTextElements.forEach(element => {
 element.textContent = generateRandomText();
 });
 }, 100);
+
+const dangerZone = document.getElementById('danger-zone');
+dangerZone.scrollIntoView({ behavior: 'smooth' });
 });
 
 function generateRandomText() {
