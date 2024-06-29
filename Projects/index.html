@@ -18,36 +18,38 @@ flex-direction: column;
 align-items: center;
 margin: 0;
 padding: 20px;
+overflow: hidden; /* Prevent scrolling */
 }
 .container {
 background-color: rgba(255, 255, 255, 0.8);
 border: 1px solid #000000;
 border-radius: 10px;
-padding: 20px;
+padding: 30px;
 width: 80%;
-max-width: 800px;
+max-width: 1000px;
 margin-top: 20px;
 text-align: center;
 }
 .project-title {
-font-size: 1.5em;
+font-size: 2em;
 font-weight: bold;
-margin-bottom: 20px;
+margin-bottom: 30px;
 }
 .project-row {
 display: flex;
 justify-content: space-around;
-margin-bottom: 20px;
+margin-bottom: 30px;
 }
 .project-text, .project-button {
 background-color: #39C16C;
 color: black;
 border: 1px solid #000000;
 border-radius: 5px;
-padding: 10px 20px;
-font-size: 1em;
+padding: 15px 30px;
+font-size: 1.2em;
 display: inline-block;
-margin: 0 10px;
+margin: 0 15px;
+text-align: center;
 }
 .project-button {
 cursor: pointer;
@@ -60,9 +62,9 @@ cursor: not-allowed;
 .danger-zone {
 font-weight: bold;
 color: red;
-margin-top: 20px;
+margin-top: 30px;
 background-color: #ff6666;
-padding: 10px;
+padding: 15px;
 border-radius: 5px;
 }
 .random-text {
@@ -75,37 +77,30 @@ display: inline-block;
 <p class="project-title">My Projects</p>
 <div class="project-row">
 <span class="project-text">Neoclient</span>
-<span class="project-text">Assembled Piano</span>
+<span class="project-text">Private!</span>
 </div>
 <div class="project-row">
-<span class="project-button">Private!</span>
+<span class="project-button">Assembled Piano</span>
 <span class="project-button">Coming soon!</span>
 </div>
 <div class="project-row">
 <span class="project-text">My Rvn clients</span>
-<span class="project-text">???</span>
+<span class="project-text">Soon!</span>
 </div>
 <div class="project-row">
-<span class="project-button">Soon</span>
-<span class="random-text" id="random-text-1">&kPlaceholder&r</span>
+<span class="project-button">???</span>
+<span class="project-text">???</span>
 </div>
 <p class="danger-zone" id="danger-zone">DANGER ZONE</p>
 <p>Malware for educational purposes.</p>
 <p>I am not responsible for any damages.</p>
 <div class="project-row">
 <span class="project-text">???</span>
-<span class="random-text" id="random-text-2">&kPlaceholder&r</span>
+<span class="project-text">???</span>
 </div>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-const randomTextElements = document.querySelectorAll(".random-text");
-setInterval(() => {
-randomTextElements.forEach(element => {
-element.textContent = generateRandomText();
-});
-}, 100);
-
 const dangerZone = document.getElementById('danger-zone');
 dangerZone.scrollIntoView({ behavior: 'smooth' });
 });
