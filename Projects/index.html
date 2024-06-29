@@ -1,224 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects - Panagiotis3149</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            color: #000000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-            overflow: hidden; /* Prevent scrolling */
-        }
-        .container {
-            background-color: rgba(169, 169, 169, 0.8); /* More gray */
-            border: 1px solid #000000;
-            border-radius: 10px;
-            padding: 30px;
-            width: 80%;
-            max-width: 1000px;
-            margin-top: 20px;
-            text-align: center;
-            z-index: 1; /* Ensure content is above the shader */
-        }
-        .project-title {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-        .project-row {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        .project-text, .project-button {
-            background-color: rgba(128, 128, 128, 0.5); /* 50% transparent gray */
-            color: black;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            padding: 10px 20px; /* Smaller padding for smaller buttons */
-            font-size: 1em; /* Smaller font size */
-            display: inline-block;
-            margin: 0 10px; /* Smaller margin */
-            text-align: center;
-            width: 150px; /* Fixed width for all buttons */
-        }
-        .project-button {
-            cursor: pointer;
-        }
-        .unavailable {
-            background-color: rgba(211, 211, 211, 0.5); /* 50% transparent light gray */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects - Panagiotis3149</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+font-family: 'Roboto', sans-serif;
+color: #000000;
+display: flex;
+flex-direction: column;
+align-items: center;
+margin: 0;
+padding: 20px;
+overflow: hidden; /* Prevent scrolling */
+}
+.container {
+background-color: rgba(169, 169, 169, 0.8); /* More gray */
+border: 1px solid #000000;
+border-radius: 10px;
+padding: 30px;
+width: 80%;
+max-width: 1000px;
+margin-top: 20px;
+text-align: center;
+z-index: 1; /* Ensure content is above the video */
+}
+.project-title {
+font-size: 2em;
+font-weight: bold;
+margin-bottom: 30px;
+}
+.project-row {
+display: flex;
+justify-content: space-around;
+margin-bottom: 20px;
+}
+.project-text, .project-button {
+background-color: rgba(128, 128, 128, 0.5); /* 50% transparent gray */
+color: black;
+border: 1px solid #000000;
+border-radius: 5px;
+padding: 10px 20px; /* Smaller padding for smaller buttons */
+font-size: 1em; /* Smaller font size */
+display: inline-block;
+margin: 0 10px; /* Smaller margin */
+text-align: center;
+width: 150px; /* Fixed width for all buttons */
+}
+.project-button {
+cursor: pointer;
+}
+.unavailable {
+background-color: rgba(211, 211, 211, 0.5); /* 50% transparent light gray */
 color: #a9a9a9;
-            cursor: not-allowed;
-        }
-        .danger-zone-container {
-            background-color: rgba(255, 102, 102, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 10vh; /* Closer to the content /
-        }
-        .danger-zone {
-            font-weight: bold;
-            color: red;
-            font-size: 1.5em;
-        }
-        .random-text {
-            display: inline-block;
-        }
-        .scroll-hint {
-            display: none; / Hide the scroll hint */
-        }
-        .canvas-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-    </style>
+cursor: not-allowed;
+}
+.danger-zone-container {
+background-color: rgba(255, 102, 102, 0.5);
+padding: 20px;
+border-radius: 10px;
+text-align: center;
+margin-top: 10vh; /* Closer to the content */
+}
+.danger-zone {
+font-weight: bold;
+color: red;
+font-size: 1.5em;
+}
+.random-text {
+display: inline-block;
+}
+.scroll-hint {
+display: none; /* Hide the scroll hint */
+}
+.video-background {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: -1;
+}
+</style>
 </head>
 <body>
-    <canvas class="canvas-background"></canvas>
-    <div class="container">
-        <p class="project-title">My Projects</p>
-        <div class="project-row">
-            <span class="project-text unavailable">Neoclient</span>
-            <span class="project-text unavailable">Assembled Piano</span>
-        </div>
-        <div class="project-row">
-            <span class="project-button">Private!</span>
-            <span class="project-button">Coming soon!</span>
-        </div>
-        <div class="project-row">
-            <span class="project-text unavailable">My Rvn clients</span>
-            <span class="project-text unavailable">???</span>
-        </div>
-        <div class="project-row">
-            <span class="project-button">Soon</span>
-            <span class="project-text">???</span>
-        </div>
-    </div>
-    <div class="danger-zone-container" id="danger-zone">
-        <p class="danger-zone">DANGER ZONE</p>
-        <p>Malware for educational purposes.</p>
-        <p>I am not responsible for any damages.</p>
-        <div class="project-row">
-            <span class="project-text unavailable">???</span>
-            <span class="project-text unavailable">???</span>
+<video class="video-background" autoplay muted loop>
+<source src="bg.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<div class="container">
+<p class="project-title">My Projects</p>
+<div class="project-row">
+<span class="project-text unavailable">Neoclient</span>
+<span class="project-text unavailable">Assembled Piano</span>
 </div>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const dangerZone = document.getElementById('danger-zone');
-            dangerZone.scrollIntoView({ behavior: 'smooth' });
+<div class="project-row">
+<span class="project-button">Private!</span>
+<span class="project-button">Coming soon!</span>
+</div>
+<div class="project-row">
+<span class="project-text unavailable">My Rvn clients</span>
+<span class="project-text unavailable">???</span>
+</div>
+<div class="project-row">
+<span class="project-button">Soon</span>
+<span class="project-text">???</span>
+</div>
+</div>
+<div class="danger-zone-container" id="danger-zone">
+<p class="danger-zone">DANGER ZONE</p>
+<p>Malware for educational purposes.</p>
+<p>I am not responsible for any damages.</p>
+<div class="project-row">
+<span class="project-text unavailable">???</span>
+<span class="project-text unavailable">???</span>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+const dangerZone = document.getElementById('danger-zone');
+dangerZone.scrollIntoView({ behavior: 'smooth' });
 
-            const canvas = document.querySelector('.canvas-background');
-            const gl = canvas.getContext('webgl');
-            if (!gl) {
-                alert('WebGL not supported');
-                return;
-            }
-
-            const vertexShaderSource = 
-                attribute vec4 a_position;
-                void main() {
-                    gl_Position = a_position;
-                }
-            ;
-
-            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-
-            function createShader(gl, type, source) {
-                const shader = gl.createShader(type);
-                gl.shaderSource(shader, source);
-                gl.compileShader(shader);
-                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                    console.error(gl.getShaderInfoLog(shader));
-                    gl.deleteShader(shader);
-                    return null;
-                }
-                return shader;
-            }
-
-            function createProgram(gl, vertexShader, fragmentShader) {
-                const program = gl.createProgram();
-                gl.attachShader(program, vertexShader);
-                gl.attachShader(program, fragmentShader);
-                gl.linkProgram(program);
-                if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-                    console.error(gl.getProgramInfoLog(program));
-                    gl.deleteProgram(program);
-                    return null;
-                }
-                return program;
-            }
-
-            function loadShader(url) {
-                return fetch(url)
-                    .then(response => response.text())
-                    .then(data => {
-const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, data);
-                        const program = createProgram(gl, vertexShader, fragmentShader);
-
-                        const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
-                        const resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
-                        const timeUniformLocation = gl.getUniformLocation(program, 'u_time');
-
-                        const positionBuffer = gl.createBuffer();
-                        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-                        const positions = [
-                            -1, -1,
-                            1, -1,
-                            -1, 1,
-                            -1, 1,
-                            1, -1,
-                            1, 1,
-                        ];
-                        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
-                        function resizeCanvasToDisplaySize(canvas) {
-                            const displayWidth = canvas.clientWidth;
-                            const displayHeight = canvas.clientHeight;
-                            if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-                                canvas.width = displayWidth;
-                                canvas.height = displayHeight;
-                            }
-                        }
-
-                        function render(time) {
-                            resizeCanvasToDisplaySize(canvas);
-                            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-                            gl.clear(gl.COLOR_BUFFER_BIT);
-                            gl.useProgram(program);
-                            gl.enableVertexAttribArray(positionAttributeLocation);
-                            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-const size = 2;
-                            const type = gl.FLOAT;
-                            const normalize = false;
-                            const stride = 0;
-                            const offset = 0;
-                            gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
-                            gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-                            gl.uniform1f(timeUniformLocation, time * 0.001);
-                            const primitiveType = gl.TRIANGLES;
-                            const count = 6;
-                            gl.drawArrays(primitiveType, 0, count);
-                            requestAnimationFrame(render);
-                        }
-                        requestAnimationFrame(render);
-                    });
-            }
-
-            loadShader('town.frag'); // Ensure this file is in the same directory or provide the correct path
-        });
-    </script>
+const video = document.querySelector('.video-background');
+video.currentTime = 5;
+video.play();
+});
+</script>
 </body>
 </html>
