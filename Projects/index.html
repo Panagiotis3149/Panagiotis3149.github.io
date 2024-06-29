@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,7 +8,6 @@
 <style>
 body {
 font-family: 'Roboto', sans-serif;
-background: #000; /* Fallback color */
 color: #000000;
 display: flex;
 flex-direction: column;
@@ -26,7 +25,7 @@ width: 80%;
 max-width: 1000px;
 margin-top: 20px;
 text-align: center;
-z-index: 1; /* Ensure content is above the video */
+z-index: 1; /* Ensure content is above the shader */
 }
 .project-title {
 font-size: 2em;
@@ -36,7 +35,7 @@ margin-bottom: 30px;
 .project-row {
 display: flex;
 justify-content: space-around;
-margin-bottom: 30px;
+margin-bottom: 20px;
 }
 .project-text, .project-button {
 background-color: rgba(128, 128, 128, 0.5); /* 50% transparent gray */
@@ -76,27 +75,18 @@ display: inline-block;
 .scroll-hint {
 display: none; /* Hide the scroll hint */
 }
-.video-background {
+.canvas-background {
 position: fixed;
 top: 0;
 left: 0;
-width: 110%;
-height: 110%;
-z-index: -1;
-overflow: hidden;
-transform: translate(-5%, -5%); /* Cut out the 5% edges /
-}
-.video-background iframe {
 width: 100%;
 height: 100%;
-border: none;
+z-index: -1;
 }
 </style>
 </head>
 <body>
-<div class="video-background">
-<iframe src="https://www.youtube.com/embed/FqnAV6tkwzA?autoplay=1&mute=1&loop=1&playlist=FqnAV6tkwzA&controls=0&showinfo=0&modestbranding=1" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
-</div>
+<canvas class="canvas-background"></canvas>
 <div class="container">
 <p class="project-title">My Projects</p>
 <div class="project-row">
@@ -129,16 +119,105 @@ border: none;
 document.addEventListener("DOMContentLoaded", function() {
 const dangerZone = document.getElementById('danger-zone');
 dangerZone.scrollIntoView({ behavior: 'smooth' });
-});
 
-function generateRandomText() {
-const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&+-~123456789";
-let text = "";
-for (let i = 0; i < 10; i++) {
-text += chars.charAt(Math.floor(Math.random() * chars.length));
+const canvas = document.querySelector('.canvas-background');
+const gl = canvas.getContext('webgl');
+if (!gl) {
+alert('WebGL not supported');
+return;
 }
-return text;
+
+const vertexShaderSource = 
+attribute vec4 a_position;
+void main() {
+gl_Position = a_position;
 }
+;
+
+function createShader(gl, type, source) {
+const shader = gl.createShader(type);
+gl.shaderSource(shader, source);
+gl.compileShader(shader);
+if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+console.error(gl.getShaderInfoLog(shader));
+gl.deleteShader(shader);
+return null;
+}
+return shader;
+}
+
+function createProgram(gl, vertexShader, fragmentShader) {
+const program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+console.error(gl.getProgramInfoLog(program));
+gl.deleteProgram(program);
+return null;
+}
+return program;
+}
+const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+
+function loadShader(url) {
+return fetch(url)
+.then(response => response.text())
+.then(data => {
+const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, data);
+const program = createProgram(gl, vertexShader, fragmentShader);
+
+const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
+const resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
+const timeUniformLocation = gl.getUniformLocation(program, 'u_time');
+
+const positionBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+const positions = [
+-1, -1,
+1, -1,
+-1, 1,
+-1, 1,
+1, -1,
+1, 1,
+];
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+function resizeCanvasToDisplaySize(canvas) {
+const displayWidth = canvas.clientWidth;
+const displayHeight = canvas.clientHeight;
+if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+canvas.width = displayWidth;
+canvas.height = displayHeight;
+}
+}
+
+function render(time) {
+resizeCanvasToDisplaySize(canvas);
+gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+gl.clear(gl.COLOR_BUFFER_BIT);
+gl.useProgram(program);
+gl.enableVertexAttribArray(positionAttributeLocation);
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+const size = 2;
+const type = gl.FLOAT;
+const normalize = false;
+const stride = 0;
+const offset = 0;
+gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
+gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+gl.uniform1f(timeUniformLocation, time * 0.001);
+const primitiveType = gl.TRIANGLES;
+const count = 6;
+gl.drawArrays(primitiveType, 0, count);
+requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+});
+}
+
+loadShader('town.frag'); // Ensure this file is in the same directory or provide the correct path
+});
 </script>
 </body>
 </html>
