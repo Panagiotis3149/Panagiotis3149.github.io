@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Annoy Me - Panagiotis3149</title>
+<title>Free Minecoins - Panagiotis3149</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body {
@@ -16,17 +16,33 @@ justify-content: center;
 height: 100vh;
 margin: 0;
 padding: 20px;
-overflow: hidden; /* Prevent scrolling */
+overflow: hidden; /* Prevent scrolling /
+}
+.container {
+background-color: rgba(169, 169, 169, 0.8); / More gray /
+border: 1px solid rgba(0, 0, 0, 0.8); / Darker gray with 80% opacity /
+border-radius: 10px;
+padding: 30px;
+width: 80%;
+max-width: 800px;
+text-align: center;
+z-index: 1; / Ensure content is above the video /
+}
+.title {
+font-size: 2em;
+font-weight: bold;
+margin-bottom: 30px;
 }
 .button {
 background-color: #39C16C;
 color: black;
-border: 1px solid rgba(0, 0, 0, 0.8); /* Darker gray with 80% opacity */
+border: 1px solid rgba(0, 0, 0, 0.8); / Darker gray with 80% opacity /
 border-radius: 5px;
-padding: 15px 25px;
+padding: 30px 50px; 
 cursor: pointer;
-font-size: 1em;
+font-size: 1.5em; 
 text-align: center;
+position: absolute;
 }
 .video-background {
 position: fixed;
@@ -44,27 +60,35 @@ z-index: -1;
 <source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-<button class="button" id="annoy-button">Annoy Me</button>
+<div class="container">
+<p class="title">!!Free Minecoins!!</p>
+<button class="button" id="minecoins-button">Get Minecoins</button>
+</div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 const video = document.querySelector('.video-background');
 video.currentTime = 0;
 video.play();
 
-const button = document.getElementById('annoy-button');
-button.addEventListener('click', function() {
-setInterval(() => {
-alert('Are you annoyed yet?');
-}, 3000);
+const button = document.getElementById('minecoins-button');
 
-setInterval(() => {
+button.addEventListener('mousemove', function(event) {
+const rect = button.getBoundingClientRect();
+const x = event.clientX - rect.left;
+const y = event.clientY - rect.top;
+
+if (x > -50 && x < rect.width + 50 && y > -50 && y < rect.height + 50) {
 button.style.left = Math.floor(Math.random() * (window.innerWidth - button.clientWidth)) + 'px';
 button.style.top = Math.floor(Math.random() * (window.innerHeight - button.clientHeight)) + 'px';
-}, 1000);
+}
+});
 
-setInterval(() => {
-document.body.style.backgroundColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-}, 500);
+button.addEventListener('click', function() {
+let txt = " ";
+while (true) {
+txt += "§§§§§§§§§§";
+console.log('bogus data best');
+}
 });
 });
 </script>
