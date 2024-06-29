@@ -8,16 +8,14 @@
 <style>
 body {
 font-family: 'Roboto', sans-serif;
-background-image: url('bg.png');
-background-size: cover;
-background-repeat: no-repeat;
-background-attachment: fixed;
+background: #000; /* Fallback color */
 color: #000000;
 display: flex;
 flex-direction: column;
 align-items: center;
 margin: 0;
 padding: 20px;
+overflow: hidden; /* Prevent scrolling */
 }
 .container {
 background-color: rgba(255, 255, 255, 0.8);
@@ -63,7 +61,7 @@ background-color: rgba(255, 102, 102, 0.5);
 padding: 20px;
 border-radius: 10px;
 text-align: center;
-margin-top: 20px; /* Closer to the content */
+margin-top: 10vh; /* Closer to the content */
 }
 .danger-zone {
 font-weight: bold;
@@ -76,9 +74,25 @@ display: inline-block;
 .scroll-hint {
 display: none; /* Hide the scroll hint */
 }
+.video-background {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: -1;
+overflow: hidden;
+}
+.video-background iframe {
+width: 100%;
+height: 100%;
+}
 </style>
 </head>
 <body>
+<div class="video-background">
+<iframe src="https://www.youtube.com/embed/FqnAV6tkwzA?autoplay=1&mute=1&loop=1&playlist=FqnAV6tkwzA" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
+</div>
 <div class="container">
 <p class="project-title">My Projects</p>
 <div class="project-row">
@@ -98,7 +112,6 @@ display: none; /* Hide the scroll hint */
 <span class="project-text">???</span>
 </div>
 </div>
-<p class="scroll-hint">- SCROLL DOWN TO SEE HERE -</p>
 <div class="danger-zone-container" id="danger-zone">
 <p class="danger-zone">DANGER ZONE</p>
 <p>Malware for educational purposes.</p>
