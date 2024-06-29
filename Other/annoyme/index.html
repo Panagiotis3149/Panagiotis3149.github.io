@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Annoy Me - Panagiotis3149</title>
+<title>AnnoyMe - Panagiotis3149</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body {
@@ -30,9 +30,6 @@ text-align: center;
 z-index: 2; /* Ensure button is above text */
 position: absolute;
 }
-.text {
-z-index: 1; /* Ensure text is above background but below button */
-}
 .video-background {
 position: fixed;
 top: 0;
@@ -49,7 +46,6 @@ z-index: -1;
 <source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-<p class="text"></p>
 <button class="button" id="annoy-button">Annoy Me</button>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -69,7 +65,7 @@ button.style.top = Math.floor(Math.random() * (window.innerHeight - button.clien
 }, 100);
 
 setInterval(() => {
-document.body.style.backgroundColor = rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5);
+document.body.style.backgroundColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
 }, 100);
 
 if (Notification.permission === "granted") {
@@ -125,11 +121,8 @@ padding: 15px 25px;
 cursor: pointer;
 font-size: 1em;
 text-align: center;
-z-index: 2; / Ensure button is above text /
+z-index: 2; / Ensure button is above text */
 position: absolute;
-}
-.text {
-z-index: 1; / Ensure text is above background but below button */
 }
 .video-background {
 position: fixed;
@@ -147,7 +140,6 @@ z-index: -1;
 <source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-<p class="text"></p>
 <button class="button" id="annoy-button">Annoy Me</button>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -159,16 +151,38 @@ const button = document.getElementById('annoy-button');
 button.addEventListener('click', function() {
 setInterval(() => {
 alert('Are you annoyed yet?');
-}, 3000);
+}, 2000);
 
 setInterval(() => {
 button.style.left = Math.floor(Math.random() * (window.innerWidth - button.clientWidth)) + 'px';
 button.style.top = Math.floor(Math.random() * (window.innerHeight - button.clientHeight)) + 'px';
-}, 1000);
+}, 100);
 
 setInterval(() => {
 document.body.style.backgroundColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
-}, 200);
+}, 100);
+
+if (Notification.permission === "granted") {
+setInterval(() => {
+new Notification("Get Annoyed", {
+body: "LOL",
+icon: "annoy.png"
+});
+}, 5000);
+} else if (Notification.permission !== "denied") {
+Notification.requestPermission().then(permission => {
+if (permission === "granted") {
+setInterval(() => {
+new Notification("Get Annoyed", {
+body: "LOL",
+icon: "annoy.png"
+});
+}, 5000);
+}
+});
+}
+});
+});
 </script>
 </body>
 </html>
