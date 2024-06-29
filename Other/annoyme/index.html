@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AnnoyMe - Panagiotis3149</title>
+<title>Annoy Me - Panagiotis3149</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body {
@@ -49,7 +49,7 @@ z-index: -1;
 <source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-<p class="text">Welcome to the AnnoyMe page!</p>
+<p class="text"></p>
 <button class="button" id="annoy-button">Annoy Me</button>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -147,7 +147,7 @@ z-index: -1;
 <source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-<p class="text">Welcome to the AnnoyMe page!</p>
+<p class="text"></p>
 <button class="button" id="annoy-button">Annoy Me</button>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -169,28 +169,6 @@ button.style.top = Math.floor(Math.random() * (window.innerHeight - button.clien
 setInterval(() => {
 document.body.style.backgroundColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
 }, 200);
-
-if (Notification.permission === "granted") {
-setInterval(() => {
-new Notification("Get Annoyed", {
-body: "LOL",
-icon: "annoy.png"
-});
-}, 5000);
-} else if (Notification.permission !== "denied") {
-Notification.requestPermission().then(permission => {
-if (permission === "granted") {
-setInterval(() => {
-new Notification("Get Annoyed", {
-body: "LOL",
-icon: "annoy.png"
-});
-}, 5000);
-}
-});
-}
-});
-});
 </script>
 </body>
 </html>
