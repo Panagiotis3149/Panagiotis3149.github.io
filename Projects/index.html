@@ -59,13 +59,17 @@ background-color: #d3d3d3;
 color: #a9a9a9;
 cursor: not-allowed;
 }
+.danger-zone-container {
+background-color: #ff6666;
+padding: 20px;
+border-radius: 10px;
+text-align: center;
+margin-top: 30px;
+}
 .danger-zone {
 font-weight: bold;
 color: red;
-margin-top: 30px;
-background-color: #ff6666;
-padding: 15px;
-border-radius: 5px;
+font-size: 1.5em;
 }
 .random-text {
 display: inline-block;
@@ -76,27 +80,29 @@ display: inline-block;
 <div class="container">
 <p class="project-title">My Projects</p>
 <div class="project-row">
-<span class="project-text">Neoclient</span>
-<span class="project-text">Private!</span>
+<span class="project-text unavailable">Neoclient</span>
+<span class="project-text unavailable">Assembled Piano</span>
 </div>
 <div class="project-row">
-<span class="project-button">Assembled Piano</span>
+<span class="project-button">Private!</span>
 <span class="project-button">Coming soon!</span>
 </div>
 <div class="project-row">
-<span class="project-text">My Rvn clients</span>
-<span class="project-text">Soon!</span>
+<span class="project-text unavailable">My Rvn clients</span>
+<span class="project-text unavailable">???</span>
 </div>
 <div class="project-row">
-<span class="project-button">???</span>
+<span class="project-button">Soon</span>
 <span class="project-text">???</span>
 </div>
-<p class="danger-zone" id="danger-zone">DANGER ZONE</p>
+<div class="danger-zone-container" id="danger-zone">
+<p class="danger-zone">DANGER ZONE</p>
 <p>Malware for educational purposes.</p>
 <p>I am not responsible for any damages.</p>
 <div class="project-row">
-<span class="project-text">???</span>
-<span class="project-text">???</span>
+<span class="project-text unavailable">???</span>
+<span class="project-text unavailable">???</span>
+</div>
 </div>
 </div>
 <script>
