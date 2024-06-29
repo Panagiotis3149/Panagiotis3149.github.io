@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects - Panagiotis3149</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+font-family: 'Roboto', sans-serif;
+background-image: url('Cmask.png');
+background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed;
+color: #000000;
+display: flex;
+flex-direction: column;
+align-items: center;
+margin: 0;
+padding: 20px;
+}
+.container {
+background-color: rgba(255, 255, 255, 0.8);
+border: 1px solid #000000;
+border-radius: 10px;
+padding: 20px;
+width: 80%;
+max-width: 800px;
+margin-top: 20px;
+text-align: center;
+}
+.project-title {
+font-size: 1.5em;
+font-weight: bold;
+margin-bottom: 20px;
+}
+.project-row {
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+.project-text, .project-button {
+background-color: #f2f2f2;
+color: black;
+border: 1px solid #000000;
+border-radius: 5px;
+padding: 10px 20px;
+font-size: 1em;
+display: inline-block;
+margin: 0 10px;
+}
+.project-button {
+cursor: pointer;
+background-color: #39C16C;
+}
+.unavailable {
+background-color: #d3d3d3;
+color: #a9a9a9;
+cursor: not-allowed;
+}
+.danger-zone {
+font-weight: bold;
+color: red;
+margin-top: 20px;
+}
+.random-text {
+display: inline-block;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<p class="project-title">My Projects</p>
+<div class="project-row">
+<span class="project-text unavailable">Neoclient</span>
+<span class="project-text unavailable">Assembled Piano</span>
+</div>
+<div class="project-row">
+<span class="project-button">Private!</span>
+<span class="project-button">Coming soon!</span>
+</div>
+<div class="project-row">
+<span class="project-text unavailable">My Rvn clients</span>
+<span class="project-text unavailable">???</span>
+</div>
+<div class="project-row">
+<span class="project-button">Soon</span>
+<span class="random-text" id="random-text-1">&kPlaceholder&r</span>
+</div>
+<p class="danger-zone">DANGER ZONE</p>
+<p>Malware for educational purposes.</p>
+<p>I am not responsible for any damages.</p>
+<div class="project-row">
+<span class="project-text unavailable">???</span>
+<span class="random-text" id="random-text-2">&kPlaceholder&r</span>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+const randomTextElements = document.querySelectorAll(".random-text");
+setInterval(() => {
+randomTextElements.forEach(element => {
+element.textContent = generateRandomText();
+});
+}, 100);
+});
 
+function generateRandomText() {
+const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&+-~123456789";
+let text = "";
+for (let i = 0; i < 10; i++) {
+text += chars.charAt(Math.floor(Math.random() chars.length));
+}
+return text;
+}
+</script>
+</body>
+</html>
