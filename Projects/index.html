@@ -8,7 +8,7 @@
 <style>
 body {
 font-family: 'Roboto', sans-serif;
-background-image: url('Cmask.png');
+background-image: url('bg.png');
 background-size: cover;
 background-repeat: no-repeat;
 background-attachment: fixed;
@@ -59,11 +59,11 @@ color: #a9a9a9;
 cursor: not-allowed;
 }
 .danger-zone-container {
-background-color: #ff6666;
+background-color: rgba(255, 102, 102, 0.5);
 padding: 20px;
 border-radius: 10px;
 text-align: center;
-margin-top: 50vh; /* Pushes the danger zone further down */
+margin-top: 20px; /* Closer to the content */
 }
 .danger-zone {
 font-weight: bold;
@@ -74,9 +74,7 @@ font-size: 1.5em;
 display: inline-block;
 }
 .scroll-hint {
-margin-top: 50vh;
-font-size: 1.5em;
-color: red;
+display: none; /* Hide the scroll hint */
 }
 </style>
 </head>
