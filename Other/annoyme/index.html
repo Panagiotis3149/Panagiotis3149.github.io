@@ -49,8 +49,8 @@ z-index: -1;
 <source src="bg.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-<p class="text">Welcome to the AnnoyMe page!</p>
 <button class="button" id="annoy-button">Annoy Me</button>
+<p class="text"> </p>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 const video = document.querySelector('.video-background');
@@ -66,7 +66,7 @@ alert('Are you annoyed yet?');
 setInterval(() => {
 button.style.left = Math.floor(Math.random() * (window.innerWidth - button.clientWidth)) + 'px';
 button.style.top = Math.floor(Math.random() * (window.innerHeight - button.clientHeight)) + 'px';
-}, 1000);
+}, 200);
 
 setInterval(() => {
 document.body.style.backgroundColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
