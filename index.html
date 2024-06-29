@@ -57,13 +57,14 @@ justify-content: center;
 margin-top: 20px;
 }
 .button {
+background-color: #00FF00;
+color: black;
 border: 1px solid #000000;
 border-radius: 5px;
 padding: 10px 20px;
 margin: 0 10px;
 cursor: pointer;
 font-size: 1em;
-background-image: url('Cmask.png');
 }
 .overlay {
 position: fixed;
@@ -85,21 +86,23 @@ text-align: center;
 color: #000000;
 }
 .close-btn {
+background-color: #00FF00;
+color: black;
 border: 1px solid #000000;
 border-radius: 5px;
 padding: 10px 20px;
 cursor: pointer;
 margin-top: 20px;
-background-image: url('Cmask.png');
 }
 .copy-btn {
+background-color: #00FF00;
+color: black;
 border: 1px solid #000000;
 border-radius: 5px;
 padding: 5px 10px;
 cursor: pointer;
 font-size: 0.9em;
 margin-left: 10px;
-background-image: url('Cmask.png');
 }
 </style>
 </head>
@@ -110,18 +113,20 @@ background-image: url('Cmask.png');
 <div class="profile-name">Panagiotis3149</div>
 </div>
 <div class="about-me">
-<p>Enter About me</p>
+<p>Hi, I'm Panagiotis, a Greek human. I like coding as a hobby, and I enjoy gaming.</p>
 </div>
 <div class="roles">
 <p>Personal Roles</p>
 <div class="role">🔵 Minecraft Cheater</div>
 <div class="role">🔴Malware enthusiast</div>
+<div class="role">🟠Beginner Java developer</div>
+<div class="role">🟢Beginner Python developer</div>
 </div>
 </div>
 <div class="buttons">
 <button class="button" onclick="showOverlay('discord')">Discord</button>
-<button class="button" onclick="showOverlay('github')">GitHub</button>
-<button class="button" onclick="showOverlay('projects')">My Projects</button>
+<a href="https://github.com/Panagiotis3149/" target="_blank"><button class="button">GitHub</button></a>
+<a href="https://panagiotis3149.github.io/Projects" target="_blank"><button class="button">My Projects</button></a>
 <button class="button" onclick="showOverlay('???')">???</button>
 </div>
 <div id="discord" class="overlay">
@@ -129,18 +134,6 @@ background-image: url('Cmask.png');
 <p><strong>Username</strong>: Panagiotis3149 <button class="copy-btn" onclick="copyToClipboard('Panagiotis3149')">Copy Username</button></p>
 <p><strong>ID</strong>: 1085203497974255656 <button class="copy-btn" onclick="copyToClipboard('1085203497974255656')">Copy UID</button></p>
 <button class="close-btn" onclick="hideOverlay('discord')">Close</button>
-</div>
-</div>
-<div id="github" class="overlay">
-<div class="overlay-content">
-<p><a href="https://github.com/Panagiotis3149/" target="_blank">Visit GitHub</a></p>
-<button class="close-btn" onclick="hideOverlay('github')">Close</button>
-</div>
-</div>
-<div id="projects" class="overlay">
-<div class="overlay-content">
-<p><a href="https://panagiotis3149.github.io/Projects" target="_blank">My Projects</a></p>
-<button class="close-btn" onclick="hideOverlay('projects')">Close</button>
 </div>
 </div>
 <div id="???" class="overlay">
@@ -160,7 +153,6 @@ function copyToClipboard(text) {
 navigator.clipboard.writeText(text).then(function() {
 alert('Copied to clipboard: ' + text);
 }, function(err) {
-[]
 alert('Failed to copy text: ' + err);
 });
 }
