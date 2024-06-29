@@ -38,7 +38,7 @@ justify-content: space-around;
 margin-bottom: 30px;
 }
 .project-text, .project-button {
-background-color: rgba(57, 193, 108, 0.5); /* 50% transparent green */
+background-color: rgba(128, 128, 128, 0.5); /* 50% transparent gray */
 color: black;
 border: 1px solid #000000;
 border-radius: 5px;
@@ -52,7 +52,7 @@ text-align: center;
 cursor: pointer;
 }
 .unavailable {
-background-color: rgba(211, 211, 211, 0.5); /* 50% transparent gray */
+background-color: rgba(211, 211, 211, 0.5); /* 50% transparent light gray */
 color: #a9a9a9;
 cursor: not-allowed;
 }
@@ -86,12 +86,13 @@ overflow: hidden;
 .video-background iframe {
 width: 100%;
 height: 100%;
+border: none;
 }
 </style>
 </head>
 <body>
 <div class="video-background">
-<iframe src="https://www.youtube.com/embed/FqnAV6tkwzA?autoplay=1&mute=1&loop=1&playlist=FqnAV6tkwzA" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/FqnAV6tkwzA?autoplay=1&mute=1&loop=1&playlist=FqnAV6tkwzA&controls=0&showinfo=0&modestbranding=1" frameborder="0" allow="autoplay; loop; muted" allowfullscreen></iframe>
 </div>
 <div class="container">
 <p class="project-title">My Projects</p>
