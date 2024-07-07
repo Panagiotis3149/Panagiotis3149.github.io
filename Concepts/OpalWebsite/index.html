@@ -15,36 +15,26 @@ align-items: center;
 justify-content: center;
 height: 100vh;
 margin: 0;
-background-color: #18516e; /* Background color */
+background: linear-gradient(to bottom right, #27729d, #19232b); /* Gradient background */
 }
 .container {
 text-align: center;
 position: relative;
 }
-.corner1, .corner2 {
-position: absolute;
-width: 100px;
-height: auto;
-}
-.corner1 {
-top: 0;
-left: 0;
-}
-.corner2 {
-bottom: 0;
-right: 0;
-}
 .glowing {
 font-size: 2em;
 animation: glow 1s ease-in-out infinite alternate;
+margin-bottom: 20px;
 }
 .smaller {
 font-size: 1em;
+margin-bottom: 20px;
 }
 .bold {
 font-weight: bold;
 font-size: 1.5em;
 animation: glow 1s ease-in-out infinite alternate;
+margin-top: 20px;
 }
 @keyframes glow {
 from {
@@ -55,21 +45,26 @@ text-shadow: 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60p
 }
 }
 img {
-margin: 20px;
-width: 250px; 
+margin-left: 20px;
+width: 100px; /* Adjust the size as needed */
 height: auto;
+vertical-align: middle;
+}
+.description-icon {
+display: flex;
+align-items: center;
+justify-content: center;
 }
 </style>
 </head>
 <body>
 <div class="container">
-<img src="opal.webp" alt="Opal Image" class="corner1">
-<img src="opal.webp" alt="Opal Image" class="corner2">
 <div class="glowing">Opal Client</div>
+<div class="description-icon">
 <div class="smaller">Literally Tenacity 6.0</div>
+<img src="opal.webp" alt="Opal Image">
+</div>
 <div class="bold">Starting at 59.99$</div>
-<img src="opal.webp" alt="Opal Image" class="owpc1">
-<img src="opal.webp" alt="Opal Image" class="owpc2">
 </div>
 </body>
 </html>
