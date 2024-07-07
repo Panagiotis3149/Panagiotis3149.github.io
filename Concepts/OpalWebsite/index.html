@@ -19,27 +19,31 @@ position: relative;
 position: absolute;
 width: 100%;
 height: 100%;
+text-align: center;
 }
 .glowing {
 font-size: 2em;
 animation: glow 1s ease-in-out infinite alternate;
 position: absolute;
-left: 25%;
+left: 50%;
 top: 30%;
+transform: translate(-50%, -50%);
 }
 .smaller {
 font-size: 1em;
 position: absolute;
-left: 30%;
-top: 35%;
+left: 50%;
+top: 45%;
+transform: translate(-50%, -50%);
 }
 .bold {
 font-weight: bold;
 font-size: 1.5em;
 animation: glow 1s ease-in-out infinite alternate;
 position: absolute;
-left: 45%;
+left: 50%;
 top: 60%;
+transform: translate(-50%, -50%);
 }
 @keyframes glow {
 from {
@@ -51,9 +55,9 @@ text-shadow: 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60p
 }
 img {
 position: absolute;
-left: 40%;
-top: 35%;
-width: 100px; /* Adjust the size as needed */
+left: 75px;
+top: 50px;
+width: 200px; /* Resized to 2x */
 height: auto;
 }
 </style>
