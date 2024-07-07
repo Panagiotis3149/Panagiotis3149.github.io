@@ -15,10 +15,24 @@ align-items: center;
 justify-content: center;
 height: 100vh;
 margin: 0;
-background-color: #000080; /* Dark blue background */
+background-color: #18516e; /* Background color */
 }
 .container {
 text-align: center;
+position: relative;
+}
+.corner1, .corner2 {
+position: absolute;
+width: 100px;
+height: auto;
+}
+.corner1 {
+top: 0;
+left: 0;
+}
+.corner2 {
+bottom: 0;
+right: 0;
 }
 .glowing {
 font-size: 2em;
@@ -41,18 +55,21 @@ text-shadow: 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60p
 }
 }
 img {
-margin-top: 20px;
-width: 100px; /* Adjust the size as needed */
+margin: 20px;
+width: 250px; 
 height: auto;
 }
 </style>
 </head>
 <body>
 <div class="container">
+<img src="opal.webp" alt="Opal Image" class="corner1">
+<img src="opal.webp" alt="Opal Image" class="corner2">
 <div class="glowing">Opal Client</div>
-<div class="smaller">Litterally Tenacity 6.0</div>
+<div class="smaller">Literally Tenacity 6.0</div>
 <div class="bold">Starting at 59.99$</div>
-<img src="opal.webp" alt="Opal Image">
+<img src="opal.webp" alt="Opal Image" class="owpc1">
+<img src="opal.webp" alt="Opal Image" class="owpc2">
 </div>
 </body>
 </html>
