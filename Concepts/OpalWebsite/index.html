@@ -9,32 +9,37 @@
 body {
 font-family: 'Roboto', sans-serif;
 color: #ffffff;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-height: 100vh;
 margin: 0;
+padding: 0;
+height: 100vh;
 background: linear-gradient(to bottom right, #27729d, #19232b); /* Gradient background */
+position: relative;
 }
 .container {
-text-align: center;
-position: relative;
+position: absolute;
+width: 100%;
+height: 100%;
 }
 .glowing {
 font-size: 2em;
 animation: glow 1s ease-in-out infinite alternate;
-margin-bottom: 20px;
+position: absolute;
+left: 25%;
+top: 30%;
 }
 .smaller {
 font-size: 1em;
-margin-bottom: 20px;
+position: absolute;
+left: 30%;
+top: 35%;
 }
 .bold {
 font-weight: bold;
 font-size: 1.5em;
 animation: glow 1s ease-in-out infinite alternate;
-margin-top: 20px;
+position: absolute;
+left: 45%;
+top: 60%;
 }
 @keyframes glow {
 from {
@@ -45,25 +50,19 @@ text-shadow: 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60p
 }
 }
 img {
-margin-left: 20px;
+position: absolute;
+left: 40%;
+top: 35%;
 width: 100px; /* Adjust the size as needed */
 height: auto;
-vertical-align: middle;
-}
-.description-icon {
-display: flex;
-align-items: center;
-justify-content: center;
 }
 </style>
 </head>
 <body>
 <div class="container">
 <div class="glowing">Opal Client</div>
-<div class="description-icon">
 <div class="smaller">Literally Tenacity 6.0</div>
 <img src="opal.webp" alt="Opal Image">
-</div>
 <div class="bold">Starting at 59.99$</div>
 </div>
 </body>
