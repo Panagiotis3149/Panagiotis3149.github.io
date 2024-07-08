@@ -1,114 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opal Website - Panagiotis3149</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background: linear-gradient(to bottom right, #27729d, #19232b);
-            position: relative;
-        }
-        .top-bar {
-            background-color: rgba(0, 0, 0, 0.5);
-            color: #000000;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 10px 0;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            border-bottom: 1px solid #000000;
-        }
-        .top-bar a {
-            color: transparent;
-            background: linear-gradient(to bottom right, #27729d, #19232b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 0 15px;
-        }
-        .top-bar a:hover {
-            text-decoration: underline;
-        }
-        .container {
-            text-align: center;
-            position: relative;
-            top: 60px;
-            width: 100%;
-            height: calc(100% - 60px);
-        }
-        .glowing {
-            font-size: 2em;
-            position: absolute;
-            left: 50%;
-            top: 25%;
-            transform: translate(-50%, -50%);
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f;
-        }
-        .opal-image {
-            position: absolute;
-            left: 25%;
-            top: 15%;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opal Website - Panagiotis3149</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+font-family: 'Roboto', sans-serif;
+color: #ffffff;
+margin: 0;
+padding: 0;
+height: 100vh;
+background: linear-gradient(to bottom right, #27729d, #19232b);
+position: relative;
+}
+.top-bar {
+background-color: rgba(0, 0, 0, 0.5);
+color: #000000;
+display: flex;
+justify-content: space-around;
+align-items: center;
+padding: 10px 0;
+width: 100%;
+position: fixed;
+top: 0;
+left: 0;
+border-bottom: 1px solid #000000;
+}
+.top-bar a {
+color: transparent;
+background: linear-gradient(to bottom right, #27729d, #19232b);
+-webkit-background-clip: text;
+background-clip: text;
+text-decoration: none;
+font-weight: bold;
+padding: 0 15px;
+}
+.top-bar a:hover {
+text-decoration: underline;
+}
+.container {
+text-align: center;
+position: relative;
+top: 60px;
+width: 100%;
+height: calc(100% - 60px);
+}
+.glowing {
+font-size: 2em;
+position: absolute;
+left: 50%;
+top: 25%;
 transform: translate(-50%, -50%);
-            width: 200px; /* Adjust the size as needed */
-            height: auto;
-        }
-        .fake-ad {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #000000;
-            border: 1px solid #000000;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px auto;
-            width: 80%;
-            max-width: 600px;
-            text-align: left;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        .fake-ad-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .fake-ad-text {
-            font-size: 1em;
-        }
-        .fake-ad a {
-            color: #0000ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .fake-ad a:hover {
-            text-decoration: underline;
-        }
-    </style>
+text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f;
+}
+.opal-image {
+position: absolute;
+left: 5%;
+top: 7.5%;
+transform: translate(-50%, -50%);
+width: 200px; /* Adjust the size as needed */
+height: auto;
+}
+.fake-ad {
+position: absolute;
+left: 80%;
+top: 50%;
+transform: translate(-50%, -50%);
+}
+.fake-ad img {
+width: 200px; /* Adjust the size as needed */
+height: auto;
+border: 1px solid #000000;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+</style>
 </head>
 <body>
-    <div class="top-bar">
-        <a href="#">Main</a>
-        <a href="#">Features</a>
-        <a href="#">Pricing</a>
-    </div>
-    <div class="container">
-        <div class="glowing">Opal Client</div>
-        <img src="opal.webp" alt="Opal Image" class="opal-image">
-        <div class="fake-ad">
-            <div class="fake-ad-title">Shitsoft Utilities</div>
-            <div class="fake-ad-text">
-                Do you own a company that makes bad software that comes with PUPs? 
-                Then download this <a href="https://github.com/enorsu/shitsoft-utilities/releases/tag/v0.1.0-installer" target="_blank">here</a>.
-            </div>
-        </div>
-    </div>
+<div class="top-bar">
+<a href="#">Main</a>
+<a href="#">Features</a>
+<a href="#">Pricing</a>
+</div>
+<div class="container">
+<div class="glowing">Opal Client</div>
+<img src="opal.webp" alt="Opal Image" class="opal-image">
+<div class="fake-ad">
+<a href="https://github.com/enorsu/shitsoft-utilities/releases/tag/v0.1.0-installer" target="_blank">
+<img src="ad.png" alt="Shitsoft Utilities Ad">
+</a>
+</div>
+</div>
 </body>
 </html>
