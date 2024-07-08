@@ -16,10 +16,10 @@ background: linear-gradient(to bottom right, #27729d, #19232b);
 position: relative;
 }
 .top-bar {
-background-color: #808080;
+background-color: rgba(0, 0, 0, 0.5); /* Black with 50% transparency */
 color: #000000;
 display: flex;
-justify-content: center;
+justify-content: space-around; /* Spread out items */
 align-items: center;
 padding: 10px 0;
 width: 100%;
@@ -36,10 +36,6 @@ background-clip: text;
 text-decoration: none;
 font-weight: bold;
 padding: 0 15px;
-border-left: 1px solid #000000;
-}
-.top-bar a:first-child {
-border-left: none;
 }
 .top-bar a:hover {
 text-decoration: underline;
