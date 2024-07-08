@@ -12,6 +12,8 @@ color: #ffffff;
 margin: 0;
 padding: 0;
 background: linear-gradient(to bottom right, #27729d, #19232b);
+height: 100vh;
+overflow: hidden;
 }
 .top-bar {
 background-color: rgba(0, 0, 0, 0.5);
@@ -25,6 +27,7 @@ position: fixed;
 top: 0;
 left: 0;
 border-bottom: 1px solid #000000;
+z-index: 1;
 }
 .top-bar a {
 color: transparent;
@@ -42,11 +45,13 @@ text-decoration: underline;
 text-align: center;
 padding-top: 60px;
 padding-bottom: 20px;
+position: relative;
+height: 100%;
 }
 .opal-image {
 position: absolute;
 left: 5%;
-top: 7.5%;
+top: 10%;
 transform: translate(-50%, -50%);
 width: 100px;
 height: auto;
