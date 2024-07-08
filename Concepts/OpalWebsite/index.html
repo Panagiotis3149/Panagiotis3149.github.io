@@ -48,9 +48,12 @@ font-size: 2em;
 text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f;
 }
 .opal-image {
+position: absolute;
+left: 5%;
+top: 7.5%;
+transform: translate(-50%, -50%);
 width: 100px; /* Adjust the size to 100px */
 height: auto;
-margin-top: 20px;
 }
 .content {
 margin: 20px;
@@ -58,6 +61,10 @@ margin: 20px;
 .scrollable {
 height: calc(100vh - 60px);
 overflow-y: auto;
+}
+.semi-off-screen {
+position: relative;
+left: -10%;
 }
 </style>
 </head>
@@ -73,11 +80,10 @@ overflow-y: auto;
 <div class="glowing">Opal Client</div>
 <div>(AKA Tenacity reborn)</div>
 <div class="content">
-<p>Opal Client, the next generation of Minecraft cheating.</p>
-<p>(semi off-screen)</p>
+<p class="semi-off-screen">Opal Client, the next generation of Minecraft cheating.</p>
 <p>Including a hypixel fireball fly, the quickest speed, and a full-strafe.</p>
 <p>This is opal.</p>
-<p>(imagine cool montage)</p>
+<p>(imagine cool montage here)</p>
 </div>
 </div>
 </div>
