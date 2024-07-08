@@ -11,9 +11,7 @@ font-family: 'Roboto', sans-serif;
 color: #ffffff;
 margin: 0;
 padding: 0;
-height: 100vh;
 background: linear-gradient(to bottom right, #27729d, #19232b);
-position: relative;
 }
 .top-bar {
 background-color: rgba(0, 0, 0, 0.5);
@@ -42,29 +40,24 @@ text-decoration: underline;
 }
 .container {
 text-align: center;
-position: relative;
-top: 60px;
-width: 100%;
-height: calc(100% - 60px);
+padding-top: 60px;
+padding-bottom: 20px;
 }
 .glowing {
-font-size: 1.5em; /* Slightly smaller */
-position: absolute;
-left: 50%;
-top: 25%;
-transform: translate(-50%, -50%);
-background: linear-gradient(to right, #00f, #0ff, #0f0, #ff0, #f00);
--webkit-background-clip: text;
-color: transparent;
+font-size: 2em;
 text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f;
 }
 .opal-image {
-position: absolute;
-left: 5%;
-top: 7.5%;
-transform: translate(-50%, -50%);
 width: 100px; /* Adjust the size to 100px */
 height: auto;
+margin-top: 20px;
+}
+.content {
+margin: 20px;
+}
+.scrollable {
+height: calc(100vh - 60px);
+overflow-y: auto;
 }
 </style>
 </head>
@@ -74,9 +67,19 @@ height: auto;
 <a href="#">Features</a>
 <a href="#">Pricing</a>
 </div>
+<div class="scrollable">
 <div class="container">
-<div class="glowing">Opal Client</div>
 <img src="opal.webp" alt="Opal Image" class="opal-image">
+<div class="glowing">Opal Client</div>
+<div>(AKA Tenacity reborn)</div>
+<div class="content">
+<p>Opal Client, the next generation of Minecraft cheating.</p>
+<p>(semi off-screen)</p>
+<p>Including a hypixel fireball fly, the quickest speed, and a full-strafe.</p>
+<p>This is opal.</p>
+<p>(imagine cool montage)</p>
+</div>
+</div>
 </div>
 </body>
 </html>
