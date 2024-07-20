@@ -14,7 +14,7 @@
             align-items: center;
             margin: 0;
             padding: 20px;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden;
         }
         .container {
             background-color: rgba(169, 169, 169, 0.8); 
@@ -47,7 +47,7 @@
         .roles {
             font-weight: bold;
             background-color: rgba(128, 128, 128, 0.6);
-            border: 1px solid rgba(0, 0, 0, 0.8); /* Samosa*/
+            border: 1px solid rgba(0, 0, 0, 0.8); 
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
@@ -69,7 +69,7 @@
         .button {
             background-color: #39C16C;
             color: black;
-            border: 1px solid rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.8); 
             border-radius: 5px;
             padding: 15px 25px;
             margin: 0 10px;
@@ -193,154 +193,10 @@
             precision mediump float;
             uniform float time;
             uniform vec2 resolution;
-            ${shaderCode}
             void main(void) {
-                mainImage(gl_FragColor, gl_FragCoord.xy);
+                vec2 st = gl_FragCoord.xy / resolution;
+                gl_FragColor = vec4(st.x, st.y, 0.5 + 0.5 * sin(time), 1.0);
             }
-        `;
-
-        const shaderCode = `
-// Fixed by FlyedCode
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-#extension GL_OES_standard_derivatives : enable
-
-uniform float time;
-uniform vec2 resolution;
-vec3  iResolution;
-float iTime;
-//#define FAST_DESCENT
-
-#ifdef FAST_DESCENT
-const vec3 cameraDir = normalize(vec3(-2.0, -1.0, -4.0));
-const float cameraDist = 5.0;
-const float speed = 3.0;
-const float zoom = 2.5;
-
-const vec3 windowColorA = vec3(0.0, 0.0, 1.5);
-const vec3 windowColorB = vec3(0.5, 1.5, 2.0);
-
-const float fogOffset = 2.5;
-const float fogDensity = 0.6;
-const vec3 fogColor = vec3(0.25, 0.0, 0.0);
-
-const float lightHeight = 0.5;
-const float lightSpeed = 0.2;
-const vec3 lightColorA = vec3(0.7, 0.3, 0.1);
-const vec3 lightColorB = vec3(1.0, 0.6, 0.3);
-
-const vec3 signColorA = vec3(3.0, 0.0, 0.0);
-const vec3 signColorB = vec3(4.0, 0.8, 0.0);
-
-const vec3 speedLineColor = vec3(1.5, 1.0, 1.0);
-#else
-const vec3 cameraDir = normalize(vec3(2.0, 0.5, -1.0));
-const float cameraDist = 3.0;
-const float speed = 0.9;
-const float zoom = 3.0;
-
-const vec3 windowColorA = vec3(0.0, 0.0, 0.1);
-const vec3 windowColorB = vec3(0.6, 0.6, 1.5);
-
-const float fogOffset = 5.0;
-const float fogDensity = 0.7;
-const vec3 fogColor = vec3(0.02, 0.05, 0.08);
-
-const float lightHeight = 0.1;
-const float lightSpeed = 0.25;
-const vec3 lightColorA = vec3(0.5, 0.3, 1.5);
-const vec3 lightColorB = vec3(0.8, 0.6, 2.5);
-
-const vec3 signColorA = vec3(1.0, 0.5, 1.0);
-const vec3 signColorB = vec3(0.6, 1.5, 2.0);
-
-const vec3 speedLineColor = vec3(0.5, 0.8, 1.5);
-#endif
-
-const float windowWidth = 0.6;
-const float windowDistance = 1.7;
-const float buildingWidth = 0.9;
-const float buildingHeight = 5.0;
-const float buildingSpacing = 5.5;
-
-const vec3 backgroundColor = vec3(0.1, 0.1, 0.1);
-
-const vec2 lightRange = vec2(-1.0, 1.0);
-const vec2 signRange = vec2(0.0, 1.0);
-
-float hash1(float n) {
-    return fract(sin(n)*758.5453);
-}
-
-float hash2(vec2 p) {
-    return fract(sin(p.x*35.2 + p.y*157.4)*758.5453);
-}
-
-float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    f = f*f*(3.0 - 2.0*f);
-    return mix(mix(hash2(i + vec2(0.0, 0.0)), hash2(i + vec2(1.0, 0.0)), f.x),
-               mix(hash2(i + vec2(0.0, 1.0)), hash2(i + vec2(1.0, 1.0)), f.x), f.y);
-}
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-    iResolution = vec3(resolution, 1.0);
-    iTime = time;
-    vec2 p = fragCoord.xy/iResolution.xy;
-    vec2 uv = p*2.0-1.0;
-    uv.x *= iResolution.x/iResolution.y;
-
-    vec3 cameraPos = vec3(0.0, 0.0, iTime*speed + cameraDist);
-
-    vec3 rayDir = normalize(vec3(uv, -zoom));
-    vec3 rayPos = cameraPos;
-    
-    vec3 color = backgroundColor;
-    vec3 fogColor = vec3(0.0);
-    
-    float distanceTraveled = 0.0;
-    for(int i = 0; i < 200; i++) {
-        vec3 pos = rayPos + rayDir*distanceTraveled;
-
-        float distToBuilding = pos.z / buildingSpacing;
-
-        if (distToBuilding > 1.0) {
-            break;
-        }
-
-        float row = floor(distToBuilding);
-        float col = floor(pos.x / buildingWidth);
-
-        vec3 buildingPos = vec3(col * buildingWidth, 0.0, row * buildingSpacing);
-        
-        float distToPlane = buildingPos.z - pos.z;
-
-        if (distToPlane < 0.0) {
-            buildingPos.z += buildingSpacing;
-        }
-
-        float windowX = mod(pos.x, buildingWidth) - windowWidth/2.0;
-        float windowY = mod(pos.y, windowDistance) - windowDistance/2.0;
-
-        vec3 windowColor = mix(windowColorA, windowColorB, hash2(vec2(col, row)));
-
-        if (abs(windowX) < windowWidth/2.0 && abs(windowY) < windowDistance/2.0) {
-            color = windowColor;
-            break;
-        }
-
-        float d = length(vec3(windowX, windowY, distToPlane));
-
-        distanceTraveled += d;
-        
-        float fogAmount = 1.0-exp(-distanceTraveled*fogDensity);
-        fogColor += mix(color, fogColor, fogAmount);
-    }
-    fragColor = vec4(fogColor, 1.0);
-}
         `;
 
         function loadShader(gl, type, source) {
@@ -445,3 +301,4 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 </script>
 </body>
 </html>
+
