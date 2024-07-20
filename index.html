@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebGL Shader Example</title>
+    <title>About Me</title>
     <style>
         body { margin: 0; }
         canvas { display: block; }
@@ -35,7 +35,9 @@
             precision mediump float;
             #endif
 
+            #ifdef GL_OES_standard_derivatives
             #extension GL_OES_standard_derivatives : enable
+            #endif
 
             uniform float time;
             uniform vec2 resolution;
@@ -180,105 +182,61 @@
                         }
                     }
 
-                    for (int j = 0; j < 2; ++j) {
-                        vec3 lo = vec3(lo0, 0.05 + 0.2 * float(j));
-                        vec3 hi = vec3(hi0, height);
-
-                        vec3 wall = mix(hi, lo, side);
-                        vec3 t = (wall - eye) * ri;
-
-                        vec3 dim = step(t.zxy, t) * step(t.yzx, t);
-                        float maxT = dot(dim, t);
-                        float maxFace = dim.x - dim.y;
-
-                        vec3 p = eye + maxT * ray;
-                        dim += step(lo, p) * step(p, hi);
-
-                        if (dim.x * dim.y * dim.z > 0.5) {
-                            if (maxT < dist) {
-                                dist = maxT;
-                                face = maxFace;
-                            }
-                        }
+                    if (dist < 500.0) {
+                        float s = 2.0;
+                        float l = 2.0;
+                        float h = 0.8;
+                        vec3 v = cameraDir - eye;
+                        vec3 norm = normalize(cameraDir + l * (0.5 - hash3(block + vec2(time, 0.0)).x));
+                        vec3 color = mix(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), dot(v, norm));
+                        return vec4(color, 1.0);
                     }
 
-                    eye += dist * ray;
-                    if (dist > 499.5) {
-                        break;
-                    }
-
-                    vec2 next = dis + ris;
-                    if (next.x < next.y) {
-                        dis.x += ris.x;
-                        block.x += rs.x;
-                    } else {
-                        dis.y += ris.y;
-                        block.y += rs.y;
-                    }
-
-                    if (abs(eye.z) > 1.0) {
-                        break;
-                    }
-
-                    vec2 window = fract(block * 1.5) - 0.5;
-                    if (face < -0.5) {
-                        if (abs(window.x) > 0.3) {
-                            break;
-                        }
-                    } else if (face > 0.5) {
-                        if (abs(window.y) > 0.3) {
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
+                    block += side.xy * ris.xy;
                 }
 
-                return vec4(eye, face);
-            }
-
-            void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-                iResolution = vec3(resolution, 1.0);
-                iTime = time;
-
-                vec2 uv = fragCoord / iResolution.xy;
-                vec2 center = 0.5 * iResolution.xy;
-                vec2 p = (fragCoord - center) / iResolution.y;
-
-                vec2 v = p + cameraDir.xy * zoom * 0.5;
-
-                vec3 ray = normalize(vec3(v, zoom));
-                vec3 eye = vec3(center, iTime * speed);
-                eye -= cameraDir * cameraDist;
-
-                vec4 face = castRay(eye, ray, center);
-                vec3 color = mix(windowColorA, windowColorB, float(face.w) * 0.5 + 0.5);
-
-                if (abs(face.w) < 0.5) {
-                    vec3 light = vec3(sin(iTime * lightSpeed) * lightHeight, 0.0, 0.0);
-                    vec3 lightDir = normalize(light - face.xyz);
-                    vec3 halfDir = normalize(lightDir - ray);
-
-                    float diff = clamp(dot(lightDir, ray), 0.0, 1.0);
-                    float spec = pow(clamp(dot(halfDir, ray), 0.0, 1.0), 32.0);
-
-                    color = mix(lightColorA, lightColorB, diff) * 0.5 + spec;
-                }
-
-                fragColor = vec4(color, 1.0);
+                return vec4(0.0, 0.0, 0.0, 1.0);
             }
 
             void main(void) {
-                vec2 uv = gl_FragCoord.xy / iResolution.xy;
-                vec2 fragCoord = uv * iResolution.xy;
-                vec4 fragColor;
-                mainImage(fragColor, fragCoord);
-                gl_FragColor = fragColor;
+                vec3 eye = vec3(0.0, 0.0, 2.5);
+                vec3 ray = normalize(vec3(gl_FragCoord.xy / iResolution.xy * 2.0 - 1.0, -1.0));
+                vec2 center = vec2(0.5, 0.5);
+
+                gl_FragColor = castRay(eye, ray, center);
             }
         `;
 
-        const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+        function compileShader(gl, source, type) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error(gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
 
+        function initShaderProgram(gl, vsSource, fsSource) {
+            const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
+            const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
+
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+
+            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                console.error('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
+                return null;
+            }
+
+            return shaderProgram;
+        }
+
+        const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
         const programInfo = {
             program: shaderProgram,
             attribLocations: {
@@ -290,87 +248,35 @@
             },
         };
 
-        const buffers = initBuffers(gl);
+        const buffers = {
+            position: (() => {
+                const buffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+                const vertices = new Float32Array([
+                    -1.0, -1.0,
+                     1.0, -1.0,
+                     1.0,  1.0,
+                    -1.0,  1.0,
+                ]);
+                gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+                return buffer;
+            })(),
+        };
 
-        function initShaderProgram(gl, vsSource, fsSource) {
-            const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-            const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
-
-            const shaderProgram = gl.createProgram();
-            gl.attachShader(shaderProgram, vertexShader);
-            gl.attachShader(shaderProgram, fragmentShader);
-            gl.linkProgram(shaderProgram);
-
-            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-                alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
-                return null;
-            }
-
-            return shaderProgram;
-        }
-
-        function loadShader(gl, type, source) {
-            const shader = gl.createShader(type);
-            gl.shaderSource(shader, source);
-            gl.compileShader(shader);
-
-            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
-                gl.deleteShader(shader);
-                return null;
-            }
-
-            return shader;
-        }
-
-        function initBuffers(gl) {
-            const positionBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-            const positions = [
-                1.0, 1.0,
-                -1.0, 1.0,
-                1.0, -1.0,
-                -1.0, -1.0,
-            ];
-
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
-            return {
-                position: positionBuffer,
-            };
-        }
-
-        function drawScene(gl, programInfo, buffers, time) {
-            gl.clearColor(0.0, 0.0, 0.0, 1.0);
-            gl.clearDepth(1.0);
-            gl.enable(gl.DEPTH_TEST);
-            gl.depthFunc(gl.LEQUAL);
-
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        function render(now) {
+            now *= 0.001; // Convert to seconds
+            gl.clear(gl.COLOR_BUFFER_BIT);
 
             gl.useProgram(programInfo.program);
-
             gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-            gl.vertexAttribPointer(
-                programInfo.attribLocations.vertexPosition,
-                2,
-                gl.FLOAT,
-                false,
-                0,
-                0
-            );
+            gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 
-            gl.uniform2f(programInfo.uniformLocations.resolution, gl.canvas.width, gl.canvas.height);
-            gl.uniform1f(programInfo.uniformLocations.time, time);
+            gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
+            gl.uniform1f(programInfo.uniformLocations.time, now);
 
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        }
 
-        function render(time) {
-            time *= 0.001;
-            drawScene(gl, programInfo, buffers, time);
             requestAnimationFrame(render);
         }
 
