@@ -132,7 +132,7 @@ body {
         <div class="profile-name">Panagiotis3149</div>
     </div>
     <div class="about-me">
-        <p>Hi, I'm Panagiotis, a Greek I like coding *as a hobby*, I enjoy gaming and i ususally code useless things or game in my free time.</p>
+        <p>Hi, I'm Panagiotis, a Greek I like coding *as a hobby*, I enjoy gaming and I usually code useless things or game in my free time.</p>
     </div>
     <div class="roles">
         <p>Personal Roles</p>
@@ -174,7 +174,10 @@ function copyToClipboard(text) {
 
 function fetchShaderSource(url) {
     return fetch(url)
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
         .catch(error => {
             console.error('Error fetching shader source:', error);
             return '';
@@ -192,9 +195,14 @@ document.addEventListener("DOMContentLoaded", function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const fsUrl = 'circle.frag';
+    const fsUrl = 'town.frag'; // Updated shader file
 
     fetchShaderSource(fsUrl).then(fsSource => {
+        if (!fsSource) {
+            console.error('Failed to load fragment shader');
+            return;
+        }
+
         const vsSource = `
             attribute vec4 a_position;
             void main() {
@@ -207,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function() {
             gl.shaderSource(shader, source);
             gl.compileShader(shader);
             if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                console.error(gl.getShaderInfoLog(shader));
+                console.error('Shader compile error:', gl.getShaderInfoLog(shader));
                 gl.deleteShader(shader);
                 return null;
             }
@@ -224,10 +232,11 @@ document.addEventListener("DOMContentLoaded", function() {
             gl.linkProgram(shaderProgram);
 
             if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-                console.error(gl.getProgramInfoLog(shaderProgram));
+                console.error('Shader program link error:', gl.getProgramInfoLog(shaderProgram));
                 return null;
             }
 
+            gl.useProgram(shaderProgram);
             return shaderProgram;
         }
 
