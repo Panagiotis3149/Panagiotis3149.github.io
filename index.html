@@ -30,183 +30,6 @@
             }
         `;
 
-        const fsSource = `
-            #ifdef GL_ES
-            precision mediump float;
-            #endif
-
-            #ifdef GL_OES_standard_derivatives
-            #extension GL_OES_standard_derivatives : enable
-            #endif
-
-            uniform float time;
-            uniform vec2 resolution;
-            vec3  iResolution;
-            float iTime;
-
-            #ifdef FAST_DESCENT
-            const vec3 cameraDir = normalize(vec3(-2.0, -1.0, -4.0));
-            const float cameraDist = 5.0;
-            const float speed = 3.0;
-            const float zoom = 2.5;
-
-            const vec3 windowColorA = vec3(0.0, 0.0, 1.5);
-            const vec3 windowColorB = vec3(0.5, 1.5, 2.0);
-
-            const float fogOffset = 2.5;
-            const float fogDensity = 0.6;
-            const vec3 fogColor = vec3(0.25, 0.0, 0.0);
-
-            const float lightHeight = 0.5;
-            const float lightSpeed = 0.2;
-            const vec3 lightColorA = vec3(0.7, 0.3, 0.1);
-            const vec3 lightColorB = vec3(1.0, 0.6, 0.3);
-
-            const vec3 signColorA = vec3(3.0, 0.0, 0.0);
-            const vec3 signColorB = vec3(3.0, 0.0, 0.0);
-            #else
-            const vec3 cameraDir = normalize(vec3(-2.0, -1.0, -2.0));
-            const float cameraDist = 9.0;
-            const float speed = 1.0;
-            const float zoom = 3.5;
-
-            const vec3 windowColorA = vec3(0.5, 0.0, 1.5);
-            const vec3 windowColorB = vec3(0.0, 0.0, 0.5);
-
-            const float fogOffset = 7.0;
-            const float fogDensity = 0.6;
-            const vec3 fogColor = vec3(0.20, 0.0, 0.30);
-
-            const float lightHeight = -0.5;
-            const float lightSpeed = 0.015;
-            const vec3 lightColorA = vec3(0.1, 0.3, 0.7);
-            const vec3 lightColorB = vec3(1.0, 0.6, 0.3);
-
-            const vec3 signColorA = vec3(0.0, 0.0, 0.5);
-            const vec3 signColorB = vec3(3.0, 0.0, 2.0);
-            #endif
-
-            const float tau = 6.283185;
-
-            float hash1(float p) {
-                vec3 p3 = fract(p * vec3(5.3983, 5.4427, 6.9371));
-                p3 += dot(p3, p3.yzx + 19.19);
-                return fract((p3.x + p3.y) * p3.z);
-            }
-
-            float hash1(vec2 p2) {
-                p2 = fract(p2 * vec2(5.3983, 5.4427));
-                p2 += dot(p2.yx, p2.xy + vec2(21.5351, 14.3137));
-                return fract(p2.x * p2.y * 95.4337);
-            }
-
-            float hash1(vec2 p2, float p) {
-                vec3 p3 = fract(vec3(5.3983 * p2.x, 5.4427 * p2.y, 6.9371 * p));
-                p3 += dot(p3, p3.yzx + 19.19);
-                return fract((p3.x + p3.y) * p3.z);
-            }
-
-            vec2 hash2(vec2 p2, float p) {
-                vec3 p3 = fract(vec3(5.3983 * p2.x, 5.4427 * p2.y, 6.9371 * p));
-                p3 += dot(p3, p3.yzx + 19.19);
-                return fract((p3.xx + p3.yz) * p3.zy);
-            }
-
-            vec3 hash3(vec2 p2) {
-                vec3 p3 = fract(vec3(p2.xyx) * vec3(5.3983, 5.4427, 6.9371));
-                p3 += dot(p3, p3.yxz + 19.19);
-                return fract((p3.xxy + p3.yzz) * p3.zyx);
-            }
-
-            vec4 hash4(vec2 p2) {
-                vec4 p4 = fract(p2.xyxy * vec4(5.3983, 5.4427, 6.9371, 7.1283));
-                p4 += dot(p4, p4.yxwz + 19.19);
-                return fract((p4.xxxy + p4.yyzz + p4.zwww) * p4.wzyx);
-            }
-
-            float noise(vec2 p) {
-                vec2 i = floor(p);
-                vec2 f = fract(p);
-                vec2 u = f * f * (3.0 - 2.0 * f);
-                return mix(mix(hash1(i + vec2(0.0, 0.0)),
-                hash1(i + vec2(1.0, 0.0)), u.x),
-                mix(hash1(i + vec2(0.0, 1.0)),
-                hash1(i + vec2(1.0, 1.0)), u.x), u.y);
-            }
-
-            vec4 castRay(vec3 eye, vec3 ray, vec2 center) {
-                vec2 block = floor(eye.xy);
-                vec3 ri = 1.0 / ray;
-                vec3 rs = sign(ray);
-                vec3 side = 0.5 + 0.5 * rs;
-                vec2 ris = ri.xy * rs.xy;
-                vec2 dis = (block - eye.xy + 0.5 + rs.xy * 0.5) * ri.xy;
-
-                for (int i = 0; i < 16; ++i) {
-                    float d = dot(block - center, cameraDir.xy);
-                    float height = 3.0 * hash1(block) - 1.0 + 1.5 * d - 0.1 * d * d;
-
-                    vec2 lo0 = vec2(block);
-                    vec2 loX = vec2(0.45, 0.45);
-                    vec2 hi0 = vec2(block + 0.55);
-                    vec2 hiX = vec2(0.45, 0.45);
-
-                    float dist = 500.0;
-                    float face = 0.0;
-
-                    {
-                        vec4 signHash = hash4(block);
-                        vec2 center = vec2(0.2, -0.4) + vec2(0.6, -0.8) * signHash.xy;
-                        float width = 0.06 + 0.1 * signHash.w;
-
-                        vec3 lo = vec3(center.x - width, 0.55, -100.0);
-                        vec3 hi = vec3(center.x + width, 0.99, center.y + width + height);
-
-                        float s = step(0.5, signHash.z);
-                        lo = vec3(block, 0.0) + mix(lo, lo.yxz, s);
-                        hi = vec3(block, 0.0) + mix(hi, hi.yxz, s);
-
-                        vec3 wall = mix(hi, lo, side);
-                        vec3 t = (wall - eye) * ri;
-
-                        vec3 dim = step(t.zxy, t) * step(t.yzx, t);
-                        float maxT = dot(dim, t);
-                        float maxFace = dim.x - dim.y;
-
-                        vec3 p = eye + maxT * ray;
-                        dim += step(lo, p) * step(p, hi);
-
-                        if (dim.x * dim.y * dim.z > 0.5) {
-                            dist = maxT;
-                            face = maxFace;
-                        }
-                    }
-
-                    if (dist < 500.0) {
-                        float s = 2.0;
-                        float l = 2.0;
-                        float h = 0.8;
-                        vec3 v = cameraDir - eye;
-                        vec3 norm = normalize(cameraDir + l * (0.5 - hash3(block + vec2(time, 0.0)).x));
-                        vec3 color = mix(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), dot(v, norm));
-                        return vec4(color, 1.0);
-                    }
-
-                    block += side.xy * ris.xy;
-                }
-
-                return vec4(0.0, 0.0, 0.0, 1.0);
-            }
-
-            void main(void) {
-                vec3 eye = vec3(0.0, 0.0, 2.5);
-                vec3 ray = normalize(vec3(gl_FragCoord.xy / iResolution.xy * 2.0 - 1.0, -1.0));
-                vec2 center = vec2(0.5, 0.5);
-
-                gl_FragColor = castRay(eye, ray, center);
-            }
-        `;
-
         function compileShader(gl, source, type) {
             const shader = gl.createShader(type);
             gl.shaderSource(shader, source);
@@ -236,53 +59,68 @@
             return shaderProgram;
         }
 
-        const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
-        const programInfo = {
-            program: shaderProgram,
-            attribLocations: {
-                vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-            },
-            uniformLocations: {
-                resolution: gl.getUniformLocation(shaderProgram, 'resolution'),
-                time: gl.getUniformLocation(shaderProgram, 'time'),
-            },
-        };
+        function fetchShaderSource(url) {
+            return fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok.');
+                    }
+                    return response.text();
+                });
+        }
 
-        const buffers = {
-            position: (() => {
-                const buffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-                const vertices = new Float32Array([
-                    -1.0, -1.0,
-                     1.0, -1.0,
-                     1.0,  1.0,
-                    -1.0,  1.0,
-                ]);
-                gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-                return buffer;
-            })(),
-        };
+        async function init() {
+            const fsSource = await fetchShaderSource('town.frag');
 
-        function render(now) {
-            now *= 0.001; // Convert to seconds
-            gl.clear(gl.COLOR_BUFFER_BIT);
+            const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+            const programInfo = {
+                program: shaderProgram,
+                attribLocations: {
+                    vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+                },
+                uniformLocations: {
+                    resolution: gl.getUniformLocation(shaderProgram, 'resolution'),
+                    time: gl.getUniformLocation(shaderProgram, 'time'),
+                },
+            };
 
-            gl.useProgram(programInfo.program);
-            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-            gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+            const buffers = {
+                position: (() => {
+                    const buffer = gl.createBuffer();
+                    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+                    const vertices = new Float32Array([
+                        -1.0, -1.0,
+                         1.0, -1.0,
+                         1.0,  1.0,
+                        -1.0,  1.0,
+                    ]);
+                    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+                    return buffer;
+                })(),
+            };
 
-            gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
-            gl.uniform1f(programInfo.uniformLocations.time, now);
+            function render(now) {
+                now *= 0.001; // Convert to seconds
+                gl.clear(gl.COLOR_BUFFER_BIT);
 
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                gl.useProgram(programInfo.program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+                gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+
+                gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
+                gl.uniform1f(programInfo.uniformLocations.time, now);
+
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                requestAnimationFrame(render);
+            }
 
             requestAnimationFrame(render);
         }
 
-        requestAnimationFrame(render);
+        init();
     });
 </script>
 </body>
 </html>
-
