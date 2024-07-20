@@ -49,7 +49,7 @@ body {
 .roles {
     font-weight: bold;
     background-color: rgba(128, 128, 128, 0.6);
-    border: 1px solid rgba(0, 0, 0, 0.8); /* Samosa*/
+    border: 1px solid rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
@@ -98,22 +98,19 @@ body {
     color: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.9); 
 }
-.close-btn {
+.close-btn, .copy-btn {
     background-color: #39C16C;
     color: black;
     border: 1px solid rgba(0, 0, 0, 0.8); 
     border-radius: 5px;
-    padding: 10px 20px;
     cursor: pointer;
+}
+.close-btn {
+    padding: 10px 20px;
     margin-top: 20px;
 }
 .copy-btn {
-    background-color: #39C16C;
-    color: black;
-    border: 1px solid rgba(0, 0, 0, 0.8); 
-    border-radius: 5px;
     padding: 5px 10px;
-    cursor: pointer;
     font-size: 0.9em;
     margin-left: 10px;
 }
@@ -162,9 +159,11 @@ body {
 function showOverlay(id) {
     document.getElementById(id).style.display = 'flex';
 }
+
 function hideOverlay(id) {
     document.getElementById(id).style.display = 'none';
 }
+
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(function() {
         alert('Copied to clipboard: ' + text);
@@ -190,11 +189,12 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     const fsUrl = 'circle.frag';
 
     fetchShaderSource(fsUrl).then(fsSource => {
-        // Vertex Shader Source
         const vsSource = `
             attribute vec4 a_position;
             void main() {
@@ -228,7 +228,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 return null;
             }
 
-            gl.useProgram(shaderProgram);
             return shaderProgram;
         }
 
@@ -271,4 +270,3 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </body>
 </html>
-
