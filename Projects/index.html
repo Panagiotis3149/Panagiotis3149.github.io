@@ -15,7 +15,7 @@ body {
   margin: 0;
   padding: 20px;
   overflow: hidden;
-  background-color: #000000; /* Updated background color */
+  background-color: #000000;
 }
 .container {
   background-color: rgba(189, 189, 189, 0.8);
@@ -26,7 +26,7 @@ body {
   max-width: 1000px;
   margin-top: 20px;
   text-align: center;
-  z-index: 1; /* Ensure content is above the video */
+  z-index: 1;
 }
 .project-title {
   font-size: 2em;
@@ -39,22 +39,22 @@ body {
   margin-bottom: 20px;
 }
 .project-text, .project-button {
-  background-color: rgba(128, 128, 128, 0.5); /* 50% transparent gray */
+  background-color: rgba(128, 128, 128, 0.5);
   color: black;
   border: 1px solid #000000;
   border-radius: 5px;
-  padding: 10px 20px; /* Smaller padding for smaller buttons */
-  font-size: 1em; /* Smaller font size */
+  padding: 10px 20px;
+  font-size: 1em;
   display: inline-block;
-  margin: 0 10px; /* Smaller margin */
+  margin: 0 10px;
   text-align: center;
-  width: 150px; /* Fixed width for all buttons */
+  width: 150px;
 }
 .project-button {
   cursor: pointer;
 }
 .unavailable {
-  background-color: rgba(211, 211, 211, 0.5); /* 50% transparent light gray */
+  background-color: rgba(211, 211, 211, 0.5);
   color: #a9a9a9;
   cursor: not-allowed;
 }
@@ -63,7 +63,7 @@ body {
   padding: 20px;
   border-radius: 10px;
   text-align: center;
-  margin-top: 10vh; /* Closer to the content */
+  margin-top: 10vh;
 }
 .danger-zone {
   font-weight: bold;
@@ -74,7 +74,7 @@ body {
   display: inline-block;
 }
 .scroll-hint {
-  display: none; /* Hide the scroll hint */
+  display: none;
 }
 .canvas-background {
   position: absolute;
@@ -82,7 +82,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Ensure canvas is behind other content */
+  z-index: -1;
 }
 </style>
 </head>
@@ -138,8 +138,14 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     const fsUrl = 'lb.frag'; // Make sure this file is accessible
 
@@ -212,16 +218,13 @@ document.addEventListener("DOMContentLoaded", function() {
             const resolutionLocation = gl.getUniformLocation(shaderProgram, 'resolution');
             const timeLocation = gl.getUniformLocation(shaderProgram, 'time');
 
-            gl.viewport(0, 0, canvas.width, canvas.height);
-
             function render() {
                 gl.clear(gl.COLOR_BUFFER_BIT);
                 gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
                 
-                // Speed up the shader by multiplying the time by 1.0
-                const speedMultiplier = 1.0;
-                gl.uniform1f(timeLocation, ((Date.now() % 10000) / 10000.0) * speedMultiplier);
-                
+                const time = (Date.now() % 10000) / 10000.0;
+                gl.uniform1f(timeLocation, time);
+
                 gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
                 requestAnimationFrame(render);
             }
