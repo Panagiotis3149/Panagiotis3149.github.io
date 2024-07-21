@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    const fsUrl = 'lb.frag'; // Make sure this file is accessible
+    const fsUrl = 'lb.frag'; // Ensure this file is accessible
 
     fetchShaderSource(fsUrl).then(fsSource => {
         if (!fsSource) {
@@ -238,3 +238,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </body>
 </html>
+
