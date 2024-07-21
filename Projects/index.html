@@ -132,9 +132,9 @@ function fetchShaderSource(url) {
 
 document.addEventListener("DOMContentLoaded", function() {
     const canvas = document.getElementById('webgl-canvas');
-    const gl = canvas.getContext('webgl');
+    const gl = canvas.getContext('webgl2');
     if (!gl) {
-        console.error('WebGL not supported');
+        console.error('WebGL 2.0 not supported');
         return;
     }
 
@@ -150,7 +150,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const vsSource = `
-            attribute vec4 a_position;
+            #version 300 es
+            in vec4 a_position;
             void main() {
                 gl_Position = a_position;
             }
@@ -231,5 +232,3 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </body>
 </html>
-
-
