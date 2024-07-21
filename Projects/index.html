@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const fsUrl = 'lb.frag'; // Updated shader file
+    const fsUrl = 'lb.frag'; // Make sure this file is accessible
 
     fetchShaderSource(fsUrl).then(fsSource => {
         if (!fsSource) {
@@ -231,3 +231,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </body>
 </html>
+
