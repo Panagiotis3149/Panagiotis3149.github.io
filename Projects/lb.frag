@@ -1,89 +1,151 @@
-#version 300 es
+#ifdef GL_ES
+precision mediump float;
+#endif
 
+#extension GL_OES_standard_derivatives : enable
 
-precision highp float;
-
-uniform vec2 resolution;
 uniform float time;
+uniform vec2 mouse;
+uniform vec2 resolution;
 
-// Define constants
-#define PI 3.1415926535
-#define T time * 3.0
-#define PELLET_SIZE 1.0 / 16.0
-#define PELLET_NUM 2
-#define THICKNESS 0.13
-#define RADIUS 0.7
 
-// Define functions
-float sdArc(in vec2 p, in float a, in float ra, float rb) {
-    a *= PI;
-    vec2 sc = vec2(sin(a), cos(a));
-    p.x = abs(p.x);
-    return ((sc.y * p.x > sc.x * p.y) ? length(p - sc * ra) : abs(length(p) - ra)) - rb;
-}
 
-mat2 rot(float a) {
-    a *= PI;
-    float s = sin(a), c = cos(a);
-    return mat2(c, -s, s, c);
-}
+#define iTime time
 
-float s(float x) {
-    return smoothstep(0.0, 1.0, x);
-}
+mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
+mat2 m2 = mat2(0.95534, 0.29552, -0.29552, 0.95534);
+float tri(in float x){return clamp(abs(fract(x)-.5),0.01,0.49);}
+vec2 tri2(in vec2 p){return vec2(tri(p.x)+tri(p.y),tri(p.y+tri(p.x)));}
 
-float sminCubic(float a, float b, float k) {
-    float h = max(k - abs(a - b), 0.0) / k;
-    return min(a, b) - h * h * h * k * (1.0 / 6.0);
-}
+float triNoise2d(in vec2 p, float spd)
+{
+    float z=1.8;
+    float z2=2.5;
+    float rz = 0.;
+    p *= mm2(p.x*0.06);
+    vec2 bp = p;
+    for (float i=0.; i<5.; i++ )
+    {
+        vec2 dg = tri2(bp*1.85)*.75;
+        dg *= mm2(time*spd);
+        p -= dg/z2;
 
-vec3 pal(float x) {
-    return mix(vec3(0.988, 0.569, 0.086), vec3(1.0, 0.082, 0.537), x);
-}
+        bp *= 1.3;
+        z2 *= .45;
+        z *= .42;
+        p *= 1.21 + (rz-1.0)*.02;
 
-float f(float x) {
-    return -2.0 * PELLET_SIZE * x;
-}
-
-float dist(vec2 p) {
-    const int n = PELLET_NUM;
-    float N = float(n);
-
-    float d1 = sdArc(p * rot(floor(T) + 1.0),
-                     0.5 - PELLET_SIZE,
-                     RADIUS,
-                     THICKNESS);
-    float d2 = 9e9;
-    for (int i = 0; i < n; i++) {
-        float j = float(i);
-        float t = s(fract((T + j) / N));
-        float a = mix(-0.5, 0.5 - f(1.0), t) + f(T);
-        d2 = min(sdArc(p * rot(a),
-                        PELLET_SIZE,
-                        RADIUS,
-                        THICKNESS), d2);
+        rz += tri(p.x+tri(p.y))*z;
+        p*= -m2;
     }
-    float r = abs(length(p) - RADIUS) - THICKNESS; // sdf of ring containing the arcs 
-    float d = sminCubic(d1, d2, 0.2);
-    return max(d, r);
+    return clamp(1./pow(rz*29., 1.3),0.,.55);
 }
 
-out vec4 fragColor;
+float hash21(in vec2 n){ return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453); }
+vec4 aurora(vec3 ro, vec3 rd)
+{
+    vec4 col = vec4(0);
+    vec4 avgCol = vec4(0);
 
-void main() {
-    vec2 uv = gl_FragCoord.xy / resolution.xy - 0.5;
-    vec2 p = (2.0 * gl_FragCoord.xy - resolution.xy) / resolution.y;
+    for(float i=0.;i<50.;i++)
+    {
+        float of = 0.006*hash21(gl_FragCoord.xy)*smoothstep(0.,15., i);
+        float pt = ((.8+pow(i,1.4)*.002)-ro.y)/(rd.y*2.+0.4);
+        pt -= of;
+        vec3 bpos = ro + pt*rd;
+        vec2 p = bpos.zx;
+        float rzt = triNoise2d(p, 0.06);
+        vec4 col2 = vec4(0,0,0, rzt);
+        col2.rgb = (sin(1.-vec3(2.15,-.5, 1.2)+i*0.043)*0.5+0.5)*rzt;
+        avgCol =  mix(avgCol, col2, .5);
+        col += avgCol*exp2(-i*0.065 - 2.5)*smoothstep(0.,5., i);
 
-    float d = dist(p); // shape
-    float m = smoothstep(0.01, 0.0, d);
+    }
 
-    float d1 = dist(p + vec2(0.0, 0.15)); // shadow
-    float s = smoothstep(0.2, -0.4, d1);
+    col *= (clamp(rd.y*15.+.4,0.,1.));
 
-    m = max(s, m); // combine shadow and shape
 
-    vec3 col = m * pal(p.x - p.y + 0.5); // color shape and shadow
-    col += 1.0 - m; // white background
-    col *= 1.0 - 1.5 * dot(uv, uv); // vignette
-    fragColor = vec4(col, 1.0);
+    //return clamp(pow(col,vec4(1.3))*1.5,0.,1.);
+    //return clamp(pow(col,vec4(1.7))*2.,0.,1.);
+    //return clamp(pow(col,vec4(1.5))*2.5,0.,1.);
+    //return clamp(pow(col,vec4(1.8))*1.5,0.,1.);
+
+    //return smoothstep(0.,1.1,pow(col,vec4(1.))*1.5);
+    return col*1.8;
+    //return pow(col,vec4(1.))*2.
+}
+
+
+//-------------------Background and Stars--------------------
+
+//From Dave_Hoskins (https://www.shadertoy.com/view/4djSRW)
+vec3 hash33(vec3 p)
+{
+    p = fract(p * vec3(443.8975,397.2973, 491.1871));
+    p += dot(p.zxy, p.yxz+19.27);
+    return fract(vec3(p.x * p.y, p.z*p.x, p.y*p.z));
+}
+
+vec3 stars(in vec3 p)
+{
+    vec3 c = vec3(0.);
+    float res = resolution.x*1.;
+
+    for (float i=0.;i<4.;i++)
+    {
+        vec3 q = fract(p*(.15*res))-0.5;
+        vec3 id = floor(p*(.15*res));
+        vec2 rn = hash33(id).xy;
+        float c2 = 1.-smoothstep(0.,.6,length(q));
+        c2 *= step(rn.x,.0005+i*i*0.001);
+        c += c2*(mix(vec3(1.0,0.49,0.1),vec3(0.75,0.9,1.),rn.y)*0.1+0.9);
+        p *= 1.3;
+    }
+    return c*c*.8;
+}
+
+vec3 bg(in vec3 rd)
+{
+    float sd = dot(normalize(vec3(-0.5, -0.6, 0.9)), rd)*0.5+0.5;
+    sd = pow(sd, 5.);
+    vec3 col = mix(vec3(0.05,0.1,0.2), vec3(0.1,0.05,0.2), sd);
+    return col*.63;
+}
+//-----------------------------------------------------------
+
+
+void main()
+{
+    vec2 q = gl_FragCoord.xy / resolution.xy;
+    vec2 p = q - 0.5;
+    p.x*=resolution.x/resolution.y;
+
+    vec3 ro = vec3(0,0,-6.7);
+    vec3 rd = normalize(vec3(p,1.3));
+    rd.yz *= mm2(0.17);
+
+    vec3 col = vec3(0.);
+    vec3 brd = rd;
+    float fade = smoothstep(0.,0.01,abs(brd.y))*0.1+0.9;
+
+    col = bg(rd)*fade;
+
+    if (rd.y > 0.){
+        vec4 aur = smoothstep(0.,1.5,aurora(ro,rd))*fade;
+        col += stars(rd);
+        col = col*(1.-aur.a) + aur.rgb;
+    }
+    else //Reflections
+    {
+        rd.y = abs(rd.y);
+        col = bg(rd)*fade*0.6;
+        vec4 aur = smoothstep(0.0,2.5,aurora(ro,rd));
+        col += stars(rd)*0.1;
+        col = col*(1.-aur.a) + aur.rgb;
+        vec2 uv = vec2(p.x,1.)/abs(p.y);
+        float nz2 = triNoise2d(uv*vec2(0.09,15.) + vec2(0.3+ 0.5*sin(p.y*17.),0.), 0.);
+        col += mix(vec3(0.2,0.25,0.5)*0.08,vec3(0.3,0.3,0.5)*0.7, nz2*0.5);
+    }
+
+    gl_FragColor = vec4(normalize(col) * sqrt(length(col)), 1.0);
 }
