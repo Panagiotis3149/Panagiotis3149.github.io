@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const vsSource = `
             #version 300 es
+            precision highp float;
             in vec4 a_position;
             void main() {
                 gl_Position = a_position;
@@ -172,6 +173,8 @@ document.addEventListener("DOMContentLoaded", function() {
         function createShaderProgram(gl, vsSource, fsSource) {
             const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
             const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
+
+            if (!vertexShader || !fragmentShader) return null;
 
             const shaderProgram = gl.createProgram();
             gl.attachShader(shaderProgram, vertexShader);
