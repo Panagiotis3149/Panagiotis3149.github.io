@@ -1,241 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projects - Panagiotis3149</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<style>
-body {
-  font-family: 'Roboto', sans-serif;
-  color: #000000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  padding: 20px;
-  overflow: hidden;
-  background-color: #000000;
-}
-.container {
-  background-color: rgba(189, 189, 189, 0.8);
-  border: 1px solid #000000;
-  border-radius: 10px;
-  padding: 30px;
-  width: 80%;
-  max-width: 1000px;
-  margin-top: 20px;
-  text-align: center;
-  z-index: 1;
-}
-.project-title {
-  font-size: 2em;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
-.project-row {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-}
-.project-text, .project-button {
-  background-color: rgba(128, 128, 128, 0.5);
-  color: black;
-  border: 1px solid #000000;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 1em;
-  display: inline-block;
-  margin: 0 10px;
-  text-align: center;
-  width: 150px;
-}
-.project-button {
-  cursor: pointer;
-}
-.unavailable {
-  background-color: rgba(211, 211, 211, 0.5);
-  color: #a9a9a9;
-  cursor: not-allowed;
-}
-.danger-zone-container {
-  background-color: rgba(255, 102, 102, 0.5);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  margin-top: 10vh;
-}
-.danger-zone {
-  font-weight: bold;
-  color: red;
-  font-size: 1.5em;
-}
-.random-text {
-  display: inline-block;
-}
-.scroll-hint {
-  display: none;
-}
-.canvas-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Panagiotis3149</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            background-color: #000000;
+        }
+        .container {
+            background-color: rgba(189, 189, 189, 0.8);
+            border: 1px solid #000000;
+            border-radius: 10px;
+            padding: 30px;
+            width: 80%;
+            max-width: 1000px;
+            margin-top: 20px;
+            text-align: center;
+            z-index: 1;
+        }
+        .project-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .project-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .project-text, .project-button {
+            background-color: rgba(128, 128, 128, 0.5);
+            color: black;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            display: inline-block;
+            margin: 0 10px;
+            text-align: center;
+            width: 150px;
+        }
+        .project-button {
+            cursor: pointer;
+        }
+        .unavailable {
+            background-color: rgba(211, 211, 211, 0.5);
+            color: #a9a9a9;
+            cursor: not-allowed;
+        }
+        .danger-zone-container {
+            background-color: rgba(255, 102, 102, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 10vh;
+        }
+        .danger-zone {
+            font-weight: bold;
+            color: red;
+            font-size: 1.5em;
+        }
+        .random-text {
+            display: inline-block;
+        }
+        .scroll-hint {
+            display: none;
+        }
+        .canvas-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
-<canvas id="webgl-canvas" class="canvas-background"></canvas>
-<div class="container">
-  <p class="project-title">My Projects</p>
-  <div class="project-row">
-    <span class="project-text unavailable">Neoclient</span>
-    <span class="project-text unavailable">Assembled Piano</span>
-  </div>
-  <div class="project-row">
-    <span class="project-button">Private!</span>
-    <span class="project-button">Coming soon!</span>
-  </div>
-  <div class="project-row">
-    <span class="project-text unavailable">My Rvn clients</span>
-    <span class="project-text unavailable">???</span>
-  </div>
-  <div class="project-row">
-    <span class="project-button">Soon</span>
-    <span class="project-text">???</span>
-  </div>
-</div>
-<div class="danger-zone-container" id="danger-zone">
-  <p class="danger-zone">DANGER ZONE</p>
-  <p>Malware for educational purposes.</p>
-  <p>I am not responsible for any damages.</p>
-  <div class="project-row">
-    <span class="project-text unavailable">???</span>
-    <span class="project-text unavailable">???</span>
-  </div>
-</div>
+    <canvas id="webgl-canvas" class="canvas-background"></canvas>
+    <div class="container">
+        <p class="project-title">My Projects</p>
+        <div class="project-row">
+            <span class="project-text unavailable">Neoclient</span>
+            <span class="project-text unavailable">Assembled Piano</span>
+        </div>
+        <div class="project-row">
+            <span class="project-button">Private!</span>
+            <span class="project-button">Coming soon!</span>
+        </div>
+        <div class="project-row">
+            <span class="project-text unavailable">My Rvn clients</span>
+            <span class="project-text unavailable">???</span>
+        </div>
+        <div class="project-row">
+            <span class="project-button">Soon</span>
+            <span class="project-text">???</span>
+        </div>
+    </div>
+    <div class="danger-zone-container" id="danger-zone">
+        <p class="danger-zone">DANGER ZONE</p>
+        <p>Malware for educational purposes.</p>
+        <p>I am not responsible for any damages.</p>
+        <div class="project-row">
+            <span class="project-text unavailable">???</span>
+            <span class="project-text unavailable">???</span>
+        </div>
+    </div>
 
-<script>
-function fetchShaderSource(url) {
-    return fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.text();
-        })
-        .catch(error => {
-            console.error('Error fetching shader source:', error);
-            return '';
+    <script>
+        function fetchShaderSource(url) {
+            return fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .catch(error => {
+                    console.error('Error fetching shader source:', error);
+                    return '';
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const canvas = document.getElementById('webgl-canvas');
+            const gl = canvas.getContext('webgl2');
+            if (!gl) {
+                console.error('WebGL 2.0 not supported');
+                return;
+            }
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const fsUrl = 'lb.frag'; // Ensure this file is accessible
+
+            fetchShaderSource(fsUrl).then(fsSource => {
+                if (!fsSource) {
+                    console.error('Failed to load fragment shader');
+                    return;
+                }
+
+                const vsSource = `
+                    #version 300 es
+                    precision highp float;
+                    in vec4 a_position;
+                    void main() {
+                        gl_Position = a_position;
+                    }
+                `;
+
+                function compileShader(gl, source, type) {
+                    const shader = gl.createShader(type);
+                    gl.shaderSource(shader, source);
+                    gl.compileShader(shader);
+                    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                        console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                        gl.deleteShader(shader);
+                        return null;
+                    }
+                    return shader;
+                }
+
+                function createShaderProgram(gl, vsSource, fsSource) {
+                    const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
+                    const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
+
+                    if (!vertexShader || !fragmentShader) return null;
+
+                    const shaderProgram = gl.createProgram();
+                    gl.attachShader(shaderProgram, vertexShader);
+                    gl.attachShader(shaderProgram, fragmentShader);
+                    gl.linkProgram(shaderProgram);
+
+                    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                        console.error('Shader program link error:', gl.getProgramInfoLog(shaderProgram));
+                        return null;
+                    }
+
+                    gl.useProgram(shaderProgram);
+                    return shaderProgram;
+                }
+
+                function setupWebGL(gl) {
+                    const shaderProgram = createShaderProgram(gl, vsSource, fsSource);
+                    if (!shaderProgram) return;
+
+                    const vertices = new Float32Array([
+                        -1.0,  1.0,
+                         1.0,  1.0,
+                        -1.0, -1.0,
+                         1.0, -1.0,
+                    ]);
+
+                    const vertexBuffer = gl.createBuffer();
+                    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+                    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+                    const positionLocation = gl.getAttribLocation(shaderProgram, 'a_position');
+                    gl.enableVertexAttribArray(positionLocation);
+                    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+                    const resolutionLocation = gl.getUniformLocation(shaderProgram, 'resolution');
+                    const timeLocation = gl.getUniformLocation(shaderProgram, 'time');
+
+                    function render() {
+                        gl.clear(gl.COLOR_BUFFER_BIT);
+                        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                        
+                        const time = (Date.now() % 10000) / 10000.0;
+                        gl.uniform1f(timeLocation, time);
+
+                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                        requestAnimationFrame(render);
+                    }
+
+                    render();
+                }
+
+                setupWebGL(gl);
+            });
         });
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    const canvas = document.getElementById('webgl-canvas');
-    const gl = canvas.getContext('webgl2');
-    if (!gl) {
-        console.error('WebGL 2.0 not supported');
-        return;
-    }
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    const fsUrl = 'lb.frag'; // Ensure this file is accessible
-
-    fetchShaderSource(fsUrl).then(fsSource => {
-        if (!fsSource) {
-            console.error('Failed to load fragment shader');
-            return;
-        }
-
-        const vsSource = `
-            #version 300 es
-            precision highp float;
-            in vec4 a_position;
-            void main() {
-                gl_Position = a_position;
-            }
-        `;
-
-        function compileShader(gl, source, type) {
-            const shader = gl.createShader(type);
-            gl.shaderSource(shader, source);
-            gl.compileShader(shader);
-            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                console.error('Shader compile error:', gl.getShaderInfoLog(shader));
-                gl.deleteShader(shader);
-                return null;
-            }
-            return shader;
-        }
-
-        function createShaderProgram(gl, vsSource, fsSource) {
-            const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
-            const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
-
-            if (!vertexShader || !fragmentShader) return null;
-
-            const shaderProgram = gl.createProgram();
-            gl.attachShader(shaderProgram, vertexShader);
-            gl.attachShader(shaderProgram, fragmentShader);
-            gl.linkProgram(shaderProgram);
-
-            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-                console.error('Shader program link error:', gl.getProgramInfoLog(shaderProgram));
-                return null;
-            }
-
-            gl.useProgram(shaderProgram);
-            return shaderProgram;
-        }
-
-        function setupWebGL(gl) {
-            const shaderProgram = createShaderProgram(gl, vsSource, fsSource);
-            if (!shaderProgram) return;
-
-            const vertices = new Float32Array([
-                -1.0,  1.0,
-                 1.0,  1.0,
-                -1.0, -1.0,
-                 1.0, -1.0,
-            ]);
-
-            const vertexBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-            const positionLocation = gl.getAttribLocation(shaderProgram, 'a_position');
-            gl.enableVertexAttribArray(positionLocation);
-            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-            const resolutionLocation = gl.getUniformLocation(shaderProgram, 'resolution');
-            const timeLocation = gl.getUniformLocation(shaderProgram, 'time');
-
-            function render() {
-                gl.clear(gl.COLOR_BUFFER_BIT);
-                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-                
-                const time = (Date.now() % 10000) / 10000.0;
-                gl.uniform1f(timeLocation, time);
-
-                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                requestAnimationFrame(render);
-            }
-
-            render();
-        }
-
-        setupWebGL(gl);
-    });
-});
-</script>
+    </script>
 </body>
 </html>
-
