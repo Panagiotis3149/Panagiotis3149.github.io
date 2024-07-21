@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            color: #000000;
+            color: #00000;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -16,6 +16,7 @@
             padding: 20px;
             overflow: hidden;
             background-color: #000000;
+            position: relative;
         }
         .container {
             background-color: rgba(189, 189, 189, 0.8);
@@ -70,9 +71,6 @@
             color: red;
             font-size: 1.5em;
         }
-        .random-text {
-            display: inline-block;
-        }
         .scroll-hint {
             display: none;
         }
@@ -87,7 +85,7 @@
     </style>
 </head>
 <body>
-    <canvas id="webgl-canvas" class="canvas-background"></canvas>
+    <canvas id="fgCanvas" class="canvas-foreground"></canvas>
     <div class="container">
         <p class="project-title">My Projects</p>
         <div class="project-row">
@@ -131,10 +129,10 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            const canvas = document.getElementById('webgl-canvas');
-            const gl = canvas.getContext('webgl2');
+            const canvas = document.getElementById('bgCanvas');
+            const gl = canvas.getContext('webgl');
             if (!gl) {
-                console.error('WebGL 2.0 not supported');
+                console.error('WebGL not supported');
                 return;
             }
 
@@ -147,7 +145,7 @@
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
-            const fsUrl = 'lb.frag'; // Ensure this file is accessible
+            const fsUrl = 'town.frag'; // Ensure this file is accessible
 
             fetchShaderSource(fsUrl).then(fsSource => {
                 if (!fsSource) {
@@ -156,9 +154,7 @@
                 }
 
                 const vsSource = `
-                    #version 300 es
-                    precision highp float;
-                    in vec4 a_position;
+                    attribute vec4 a_position;
                     void main() {
                         gl_Position = a_position;
                     }
@@ -179,8 +175,6 @@
                 function createShaderProgram(gl, vsSource, fsSource) {
                     const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
                     const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
-
-                    if (!vertexShader || !fragmentShader) return null;
 
                     const shaderProgram = gl.createProgram();
                     gl.attachShader(shaderProgram, vertexShader);
@@ -222,9 +216,10 @@
                         gl.clear(gl.COLOR_BUFFER_BIT);
                         gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
                         
-                        const time = (Date.now() % 10000) / 10000.0;
-                        gl.uniform1f(timeLocation, time);
-
+                        
+                        const speedMultiplier = 1.0;
+                        gl.uniform1f(timeLocation, ((Date.now() % 10000) / 10000.0) * speedMultiplier);
+                        
                         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
                         requestAnimationFrame(render);
                     }
