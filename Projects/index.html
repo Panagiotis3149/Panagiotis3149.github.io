@@ -117,172 +117,117 @@ body {
   </div>
 </div>
 
-<!-- Vertex Shader -->
-<script id="vertex-shader" type="x-shader/x-vertex">
-attribute vec4 a_position;
-void main() {
-  gl_Position = a_position;
 }
-</script>
 
-<!-- Fragment Shader -->
-<script id="fragment-shader" type="x-shader/x-fragment">
-#version 330
-out vec4 fragmentColor;
+function fetchShaderSource(url) {
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .catch(error => {
+            console.error('Error fetching shader source:', error);
+            return '';
+        });
+}
 
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-uniform float time;
-uniform vec2 resolution;
-
-float vec_smootherstep(float edge0, float edge1, float x) {
-  float t = clamp(((x - edge0) / (edge1 - edge0)), 0.0, 1.0);
-  return (((t * t) * t) * ((t * ((t * 6.0) - 15.0)) + 10.0));
-}
-vec2 sincos(float x) {
-  return vec2(sin(x), cos(x));
-}
-float noise_hash1_2(vec2 v) {
-  vec3 v3 = v.xyx;
-  v3 = fract((v3 * 0.1031));
-  v3 = (v3 + dot(v3, (v3.yzx + 33.33)));
-  return fract(((v3.x + v3.y) * v3.z));
-}
-vec2 noise_hash2_1(vec2 v) {
-  vec3 v3 = v.xyx;
-  v3 = (v3 * vec3(0.1031, 0.103, 0.0973));
-  v3 = (v3 + dot(v3, (v3.yzx + 33.33)));
-  return fract(((v3.xx + v3.yz) * v3.zy));
-}
-float noise_noisemix2(float a, float b, float c, float d, vec2 f) {
-  vec2 u = ((f * f) * (3.0 - (2.0 * f)));
-  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
-}
-float noise_value_1(vec2 p) {
-  vec2 i = floor(p);
-  vec2 f = fract(p);
-  vec2 I = floor((i + 1.0));
-  float a = noise_hash1_2(i);
-  float b = noise_hash1_2(vec2(I.x, i.y));
-  float c = noise_hash1_2(vec2(i.x, I.y));
-  float d = noise_hash1_2(I);
-  return noise_noisemix2(a, b, c, d, f);
-}
-float noise_gradient_1(vec2 p) {
-  vec2 i = floor(p);
-  vec2 f = fract(p);
-  vec2 I = floor((i + 1.0));
-  vec2 F = (f - 1.0);
-  float a = dot((-0.5 + noise_hash2_1(i)), f);
-  float b = dot((-0.5 + noise_hash2_1(vec2(I.x, i.y))), vec2(F.x, f.y));
-  float c = dot((-0.5 + noise_hash2_1(vec2(i.x, I.y))), vec2(f.x, F.y));
-  float d = dot((-0.5 + noise_hash2_1(I)), F);
-  return (0.5 + noise_noisemix2(a, b, c, d, f));
-}
-vec3 colorgrade_tonemap_aces(vec3 col) {
-  return clamp(((col * ((2.51 * col) + 0.03)) / ((col * ((2.43 * col) + 0.59)) + 0.14)), 0.0, 1.0);
-}
-vec3 colorgrade_saturate(vec3 col, float sat) {
-  float grey = dot(col, vec3(0.2125, 0.7154, 0.0721));
-  return (grey + (sat * (col - grey)));
-}
-vec3 colorgrade_tone_1(vec3 col, vec3 gain, vec3 lift, vec3 invgamma) {
-  col = pow(col, invgamma);
-  return (((gain - lift) * col) + lift);
-}
-vec3 colorgrade_gamma_correction(vec3 col) {
-  return ((1.12661 * sqrt(col)) - (0.12661 * col));
-}
-vec3 colorgrade_vignette(vec2 uv, float vignette) {
-  float dist = length(uv - vec2(0.5));
-  return mix(vec3(1.0), vec3(0.0), smoothstep(0.75, vignette, dist));
-}
-void main() {
-  vec2 uv = (gl_FragCoord.xy / resolution.xy);
-  vec2 uvv = (uv * 2.0 - 1.0);
-  vec3 col = vec3(0.0);
-  col += colorgrade_vignette(uv, 1.2);
-  float noise = noise_value_1(uv * 10.0);
-  col += (vec3(noise) * 0.5);
-  col = colorgrade_gamma_correction(col);
-  col = colorgrade_saturate(col, 1.2);
-  fragmentColor = vec4(col, 1.0);
-}
-</script>
-
-<script>
 document.addEventListener("DOMContentLoaded", function() {
-  const canvas = document.getElementById('webgl-canvas');
-  const gl = canvas.getContext('webgl');
-
-  if (!gl) {
-    console.error("WebGL not supported");
-    return;
-  }
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const vsSource = document.getElementById('vertex-shader').textContent;
-  const fsSource = document.getElementById('fragment-shader').textContent;
-
-  function createShader(gl, type, source) {
-    const shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      console.error('Shader compile error:', gl.getShaderInfoLog(shader));
-      gl.deleteShader(shader);
-      return null;
+    const canvas = document.getElementById('bgCanvas');
+    const gl = canvas.getContext('webgl');
+    if (!gl) {
+        console.error('WebGL not supported');
+        return;
     }
-    return shader;
-  }
 
-  const vertexShader = createShader(gl, gl.VERTEX_SHADER, vsSource);
-  const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-  const shaderProgram = gl.createProgram();
-  gl.attachShader(shaderProgram, vertexShader);
-  gl.attachShader(shaderProgram, fragmentShader);
-  gl.linkProgram(shaderProgram);
-  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-    console.error('Program link error:', gl.getProgramInfoLog(shaderProgram));
-    return;
-  }
+    const fsUrl = 'lb.frag'; // Updated shader file
 
-  gl.useProgram(shaderProgram);
+    fetchShaderSource(fsUrl).then(fsSource => {
+        if (!fsSource) {
+            console.error('Failed to load fragment shader');
+            return;
+        }
 
-  const vertices = new Float32Array([
-    -1, -1, 0, 
-     1, -1, 0,
-    -1,  1, 0,
-     1,  1, 0,
-  ]);
+        const vsSource = 
+            attribute vec4 a_position;
+            void main() {
+                gl_Position = a_position;
+            }
+        ;
 
-  const positionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        function compileShader(gl, source, type) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
 
-  const positionLocation = gl.getAttribLocation(shaderProgram, 'a_position');
-  const timeLocation = gl.getUniformLocation(shaderProgram, 'time');
-  const resolutionLocation = gl.getUniformLocation(shaderProgram, 'resolution');
+        function createShaderProgram(gl, vsSource, fsSource) {
+            const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
+            const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
 
-  gl.enableVertexAttribArray(positionLocation);
-  gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
 
-  function render(time) {
-    gl.clear(gl.COLOR_BUFFER_BIT);
+            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                console.error('Shader program link error:', gl.getProgramInfoLog(shaderProgram));
+                return null;
+            }
 
-    gl.uniform1f(timeLocation, time * 0.001);
-    gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+            gl.useProgram(shaderProgram);
+            return shaderProgram;
+        }
 
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    requestAnimationFrame(render);
-  }
+        function setupWebGL(gl) {
+            const shaderProgram = createShaderProgram(gl, vsSource, fsSource);
+            if (!shaderProgram) return;
 
-  requestAnimationFrame(render);
+            const vertices = new Float32Array([
+                -1.0,  1.0,
+                 1.0,  1.0,
+                -1.0, -1.0,
+                 1.0, -1.0,
+            ]);
+
+            const vertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(shaderProgram, 'a_position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const resolutionLocation = gl.getUniformLocation(shaderProgram, 'resolution');
+            const timeLocation = gl.getUniformLocation(shaderProgram, 'time');
+
+            gl.viewport(0, 0, canvas.width, canvas.height);
+
+            function render() {
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                
+                // Speed up the shader by multiplying the time by 1.0
+                const speedMultiplier = 1.0;
+                gl.uniform1f(timeLocation, ((Date.now() % 10000) / 10000.0) * speedMultiplier);
+                
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(render);
+            }
+
+            render();
+        }
+
+        setupWebGL(gl);
+    });
 });
 </script>
 </body>
