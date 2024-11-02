@@ -90,18 +90,18 @@
         <p class="project-title">My Projects</p>
         <div class="project-row">
             <span class="project-text unavailable">Neoclient</span>
-            <span class="project-text unavailable">Assembled Piano</span>
+            <span class="project-text unavailable">???/span>
         </div>
         <div class="project-row">
             <span class="project-button">Private!</span>
-            <span class="project-button">Coming soon!</span>
+            <span class="project-button">???</span>
         </div>
         <div class="project-row">
-            <span class="project-text unavailable">My Rvn clients</span>
+            <span class="project-text unavailable">???</span>
             <span class="project-text unavailable">???</span>
         </div>
         <div class="project-row">
-            <span class="project-button">Soon</span>
+            <span class="project-button">???</span>
             <span class="project-text">???</span>
         </div>
     </div>
@@ -129,95 +129,94 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            const canvas = document.getElementById('bgCanvas');
-            const gl = canvas.getContext('webgl');
-            if (!gl) {
-                console.error('WebGL not supported');
-                return;
+    const canvas = document.getElementById('fgCanvas');
+    const gl = canvas.getContext('webgl');
+    if (!gl) {
+        console.error('WebGL not supported');
+        return;
+    }
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const fsUrl = 'town.frag';
+
+    fetchShaderSource(fsUrl).then(fsSource => {
+        if (!fsSource) {
+            console.error('Failed to load fragment shader');
+            return;
+        }
+
+        const vsSource = `
+            attribute vec4 a_position;
+            void main() {
+                gl_Position = a_position;
+            }
+        `;
+
+        function compileShader(gl, source, type) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+
+        function createShaderProgram(gl, vsSource, fsSource) {
+            const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
+            const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
+
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+
+            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                console.error('Shader program link error:', gl.getProgramInfoLog(shaderProgram));
+                return null;
             }
 
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                gl.viewport(0, 0, canvas.width, canvas.height);
-            }
+            gl.useProgram(shaderProgram);
+            return shaderProgram;
+        }
 
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+        function setupWebGL(gl) {
+            const shaderProgram = createShaderProgram(gl, vsSource, fsSource);
+            if (!shaderProgram) return;
 
-            const fsUrl = 'town.frag'; // Ensure this file is accessible
+            const vertices = new Float32Array([
+                -1.0,  1.0,
+                 1.0,  1.0,
+                -1.0, -1.0,
+                 1.0, -1.0,
+            ]);
 
-            fetchShaderSource(fsUrl).then(fsSource => {
-                if (!fsSource) {
-                    console.error('Failed to load fragment shader');
-                    return;
-                }
+            const vertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
-                const vsSource = `
-                    attribute vec4 a_position;
-                    void main() {
-                        gl_Position = a_position;
-                    }
-                `;
+            const positionLocation = gl.getAttribLocation(shaderProgram, 'a_position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-                function compileShader(gl, source, type) {
-                    const shader = gl.createShader(type);
-                    gl.shaderSource(shader, source);
-                    gl.compileShader(shader);
-                    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                        console.error('Shader compile error:', gl.getShaderInfoLog(shader));
-                        gl.deleteShader(shader);
-                        return null;
-                    }
-                    return shader;
-                }
+            const resolutionLocation = gl.getUniformLocation(shaderProgram, 'resolution');
+            const timeLocation = gl.getUniformLocation(shaderProgram, 'time');
 
-                function createShaderProgram(gl, vsSource, fsSource) {
-                    const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
-                    const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
-
-                    const shaderProgram = gl.createProgram();
-                    gl.attachShader(shaderProgram, vertexShader);
-                    gl.attachShader(shaderProgram, fragmentShader);
-                    gl.linkProgram(shaderProgram);
-
-                    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-                        console.error('Shader program link error:', gl.getProgramInfoLog(shaderProgram));
-                        return null;
-                    }
-
-                    gl.useProgram(shaderProgram);
-                    return shaderProgram;
-                }
-
-                function setupWebGL(gl) {
-                    const shaderProgram = createShaderProgram(gl, vsSource, fsSource);
-                    if (!shaderProgram) return;
-
-                    const vertices = new Float32Array([
-                        -1.0,  1.0,
-                         1.0,  1.0,
-                        -1.0, -1.0,
-                         1.0, -1.0,
-                    ]);
-
-                    const vertexBuffer = gl.createBuffer();
-                    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-                    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-                    const positionLocation = gl.getAttribLocation(shaderProgram, 'a_position');
-                    gl.enableVertexAttribArray(positionLocation);
-                    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-                    const resolutionLocation = gl.getUniformLocation(shaderProgram, 'resolution');
-                    const timeLocation = gl.getUniformLocation(shaderProgram, 'time');
-
-                    function render() {
-                        gl.clear(gl.COLOR_BUFFER_BIT);
-                        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-                        
-                        
-                        const speedMultiplier = 1.0;
+            function render() {
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                
+                const speedMultiplier = 1.0;
                         gl.uniform1f(timeLocation, ((Date.now() % 10000) / 10000.0) * speedMultiplier);
                         
                         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
