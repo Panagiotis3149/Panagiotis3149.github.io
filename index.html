@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Panagiotis3149</title>
+    <link rel="icon" href="pfp.png" type="image/svg+xml">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        html, body { margin:0; height:100%; overflow:hidden; font-family:"Product Sans",sans-serif; background:#0b0b10; color:#fff }
+        canvas { display:block; position:absolute; top:0; left:0; z-index:0; }
+
+
+        .center-wrap { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:1; }
+
+
+        .box {
+            width:50%;
+            max-width:880px;
+            min-width:320px;
+            height:45vh;
+            background: rgba(255,255,255,0.05);
+            border-radius:20px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            padding:32px 28px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        h1 { margin:0 0 12px 0; font-size:28px; color:#fff }
+        p.desc { margin:0 0 22px 0; opacity:0.95; max-width:78%; line-height:1.35 }
+
+        .btn-row { display:flex; gap:14px; align-items:center; justify-content:center }
+
+        .icon-link {
+            width:56px;
+            height:56px;
+            border-radius:50%;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            overflow:hidden;
+            text-decoration:none;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .icon-link:focus { outline:2px solid rgba(255,255,255,0.12); outline-offset:4px }
+        .icon-link:hover { transform:scale(1.07); box-shadow: 0 8px 22px rgba(0,0,0,0.45) }
+
+        .favicon { width:70%; height:70%; object-fit:contain; display:block }
+
+        .pfp { width:128px; height:128px; border-radius:50%; object-fit:cover; margin-bottom:16px; box-shadow: 0 8px 24px rgba(0,0,0,0.5) }
+
+
+        .sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+
+
+        @media (max-width:720px){
+            .box{ width:86%; height:52vh; padding:20px }
+            h1{ font-size:22px }
+            .icon-link{ width:50px; height:50px }
+        }
+    </style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<div class="center-wrap">
+    <div class="box">
+        <img class="pfp" src="pfp.png" alt="Panagiotis3149">
+        <h1>Panagiotis3149</h1>
+        <p class="desc">I know a bit of java.</p>
+
+        <div class="btn-row">
+            <a class="icon-link icon-link--remote" href="https://discordapp.com/users/1085203497974255656" target="_blank" rel="noopener">Discord</a>
+            <a class="icon-link icon-link--remote" href="https://namemc.com/Panagiotis3149" target="_blank" rel="noopener">NameMC</a>
+            <a class="icon-link icon-link--remote" href="https://github.com/Panagiotis3149" target="_blank" rel="noopener">GitHub</a>
+            <a class="icon-link icon-link--local" href="https://github.com/Panagiotis3149/Neoclient" target="_blank" rel="noopener">Neoclient</a>
+        </div>
+    </div>
+
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+        attribute vec4 position;
+        void main() {
+            gl_Position = position;
+        }
+    </script>
+
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+
+        #ifdef GL_ES
+        precision highp float;
+        #endif
+
+        uniform float time;
+        uniform vec2 resolution;
+
+        #define iTime time
+        #define iResolution resolution
+        #define PI 3.14159
+
+        vec3 spunk(vec2 uv)
+        {
+           vec3 col = vec3(.55,0.35,1.225);
+           uv.x += sin(0.2+uv.y*0.8)*0.5;
+           uv.x = uv.x*50.0;
+           float dx = fract(uv.x);
+           uv.x = floor(uv.x);
+           float t =  iTime*0.4;
+           uv.y *= 0.15;
+           float o=sin(uv.x*215.4);
+           float s=cos(uv.x*33.1)*.3 +.7;
+           float trail = mix(95.0,35.0,s);
+           float yv = fract(uv.y + t*s + o) * trail;
+           yv = 1.0/yv;
+           yv = smoothstep(0.0,1.0,yv*yv);
+           yv = sin(yv*PI)*(s*5.0);
+           float d2 = sin(dx*PI);
+           yv *= d2*d2;
+           col = col*yv;
+           return col;
+        }
+
+        void main(void)
+        {
+           vec2 p = (-iResolution.xy + 2.0*gl_FragCoord.xy)/iResolution.y;
+           vec3 bbk = spunk(p.xy);
+           float v = 1.0-abs(p.y);
+           vec3 col = bbk*v*2.0;
+           col = sqrt(col);
+           gl_FragColor = vec4(col,1.0);
+        }
+    </script>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const gl = canvas.getContext('webgl');
+        function resize(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if(gl) gl.viewport(0,0,canvas.width,canvas.height);
+        }
+        resize();
+
+        function getShader(id, type){
+            const src = document.getElementById(id).textContent;
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, src);
+            gl.compileShader(shader);
+            return shader;
+        }
+
+        const vertexShader = getShader('vertexShader', gl.VERTEX_SHADER);
+        const fragmentShader = getShader('fragmentShader', gl.FRAGMENT_SHADER);
+
+        const program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        const position = gl.getAttribLocation(program, "position");
+        const buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+            -1,-1, 1,-1, -1,1,
+            -1,1, 1,-1, 1,1
+        ]), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(position);
+        gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+
+        const timeUniform = gl.getUniformLocation(program, "time");
+        const resolutionUniform = gl.getUniformLocation(program, "resolution");
+
+        function render(t){
+            gl.uniform1f(timeUniform, t*0.001);
+            gl.uniform2f(resolutionUniform, canvas.width, canvas.height);
+            gl.drawArrays(gl.TRIANGLES,0,6);
+            requestAnimationFrame(render);
+        }
+        render(0);
+
+        window.addEventListener('resize', ()=>{ resize(); gl.uniform2f(resolutionUniform, canvas.width, canvas.height); });
+
+        document.querySelectorAll('.icon-link--remote').forEach(a=>{
+            try{
+                const origin = (new URL(a.href)).origin.replace(/^https?:\/\//,'');
+                const originFull = (new URL(a.href)).origin;
+                const img = document.createElement('img');
+                img.className = 'favicon';
+                img.alt = a.textContent || a.href;
+                img.src = originFull + '/favicon.ico';
+                img.onerror = ()=>{
+                    img.onerror = null;
+                    img.src = 'https://www.google.com/s2/favicons?sz=128&domain=' + encodeURIComponent(origin);
+                };
+                const sr = document.createElement('span');
+                sr.className = 'sr-only';
+                sr.textContent = a.textContent || a.href;
+                a.textContent = '';
+                a.appendChild(img);
+                a.appendChild(sr);
+            }catch(e){
+            }
+        });
+
+
+        document.querySelectorAll('.icon-link--local').forEach(a=>{
+            try{
+                const img = document.createElement('img');
+                img.className = 'favicon';
+                img.alt = a.textContent || a.href;
+                img.src = 'neo.png';
+                img.style.width = '135%';
+                img.style.height = '135%';
+                img.onerror = ()=>{
+                    img.onerror = null;
+                    const origin = (new URL(a.href)).origin.replace(/^https?:\/\//,'');
+                    img.src = 'https://www.google.com/s2/favicons?sz=128&domain=' + encodeURIComponent(origin);
+                };
+                const sr = document.createElement('span');
+                sr.className = 'sr-only';
+                sr.textContent = a.textContent || a.href;
+                a.textContent = '';
+                a.appendChild(img);
+                a.appendChild(sr);
+            }catch(e){
+            }
+        });
+
+
+        document.querySelectorAll('.icon-link--remote').forEach(a=>{
+            if(a.href.includes('namemc.com')){
+                const img = a.querySelector('img');
+                img.src = 'nmc.png';
+            }
+        });
+
+
+    </script>
+</div>
+</body>
+</html>
