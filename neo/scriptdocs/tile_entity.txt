@@ -4,10 +4,6 @@
 Required: world.getTileEntities();
 {% endhint %}
 
-{% content-ref url="objects" %}
-[objects](https://blowsy.gitbook.io/raven-b4/documentation/objects)
-{% endcontent-ref %}
-
 ### getPosition
 
 ```java
@@ -31,3 +27,4 @@ Returns the metadata of a skull.
 | name     | 2     | String |
 | uuid     | 3     | String |
   
+
