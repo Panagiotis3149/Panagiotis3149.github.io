@@ -1,0 +1,42 @@
+# Setup
+
+{% hint style="warning" %}
+You must install the Java Development Kit to create and use scripts!
+{% endhint %}
+
+## Installing the Java Development Kit
+
+In order to compile Java scripts, it is necessary to utilize a Java Development Kit (JDK). By default, your system may be equipped with a Java Runtime Environment (JRE) installation, which is capable solely of executing Java applications but does not include the necessary tools for compilation tasks.
+
+You may install the Adoptium Java 8 JDK [here](https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u432-b06/OpenJDK8U-jdk_x64_windows_hotspot_8u432b06.msi).
+
+## Setting the Java executable
+
+{% hint style="info" %}
+On Windows, the Java executable is typically located at
+
+`C:\Program Files\Java\jdk`<mark style="color:red;">`<your-version>`</mark>`\bin\javaw.exe`
+{% endhint %}
+
+To configure the Java executable in the default Minecraft Launcher, follow these steps:
+
+1. Navigate to the "Installations" tab in the launcher interface.
+2. Locate the launch profile for which you want to set the Java executable.
+3. On the right-hand side of the launch profile, click the button faced with three dots.
+4. Select the "Edit" option from the drop-down menu.
+5. Click on "More Options" to expand it and reveal additional settings.
+6. Locate the field labelled "Java executable" within the "More Options" section.
+7. Paste the path of `javaw.exe` corresponding to your Java installation into the field.
+
+## Creating Scripts
+
+* Raven scripts are coded in Java, which means your code must be in a `.java` file.
+* The recommended approach is to utilise a code editor, such as Brackets or Visual Studio Code.
+* All scripts must be in the scripts folder in order to be used. If the file name begins with an underscore, it will not be recognised as a valid script file.
+
+## Using Scripts
+
+* The GUI contains a category labelled **Scripts**. All scripts in your scripts folder will be displayed here.
+* To add scripts, click the **Open Folder** button within the Manager module, and drag your scripts into the folder.
+* It is essential to remember that whenever you introduce a new script or make modifications to an existing one, it is crucial to press the **Load Scripts** button to successfully apply new changes.
+* If there is an error within the script, it will appear in <mark style="color:red;">red</mark> and cannot be enabled. An error message will also be displayed in the chat window, providing specific details about the encountered issue.

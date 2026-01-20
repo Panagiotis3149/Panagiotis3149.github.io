@@ -1,0 +1,73 @@
+# world
+
+### getBlockAt
+
+```java
+Block block = world.getBlockAt(Vec3 position);
+```
+
+Returns a block at a specified position.
+
+### getDimension
+
+```java
+String dimension = world.getDimension();
+```
+
+Returns the current dimension name.
+
+### getEntities
+
+```java
+List<Entity> entities = world.getEntities();
+```
+
+Returns the entity list.
+
+### getEntityById
+
+```java
+Entity entity = world.getEntityById(int entityId);
+```
+
+Returns an entity from their entity ID.
+
+### getNetworkPlayers
+
+```java
+List<NetworkPlayer> networkPlayers = world.getNetworkPlayers();
+```
+
+Returns the network player list.
+
+### getPlayerEntities
+
+```java
+List<Entity> players = world.getPlayerEntities();
+```
+
+Returns the player entity list.
+
+### getScoreboard
+
+```java
+List<String> scoreboard = world.getScoreboard();
+```
+
+Returns the scoreboard.
+
+### getTeams
+
+```java
+Map<String, List<String>> teamMap = world.getTeams();
+```
+
+Returns the team map.
+
+### getTileEntities
+
+```java
+List<TileEntity> tileEntities = world.getTileEntities();
+```
+
+Returns the tile entity list.

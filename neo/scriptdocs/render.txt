@@ -1,0 +1,195 @@
+  
+# render
+
+### block
+
+```java
+render.block(Vec3 position, int color, boolean outline, boolean shade);
+render.block(int x, int y, int z, int color, boolean outline, boolean shade);
+```
+
+Renders a block at a specified position in the world. Must be called during the `onRenderWorld` event.
+
+### bloom
+
+```java
+render.bloom.prepare();
+render.bloom.apply(int passes, float radius);
+```
+
+Applies a bloom shader to all renders between `prepare` and `apply`.
+
+### blur
+
+```java
+render.blur.prepare();
+render.blur.apply(int passes, float radius);
+```
+
+Applies a blur shader to all renders between `prepare` and `apply`.
+
+### entity
+
+{% code overflow="wrap" %}
+
+```java
+render.entity(Entity entity, int color, float partialTicks, boolean outline, boolean shade);
+```
+
+{% endcode %}
+
+Renders an entity outline.
+
+### entityGui
+
+{% code overflow="wrap" %}
+
+```java
+render.entityGui(Entity en, int x, int y, float mouseX, float mouseY, int scale);
+```
+
+{% endcode %}
+
+Renders an entity model on the screen.
+
+### getCameraRotations
+
+{% code overflow="wrap" %}
+
+```java
+double[] rotations = render.getCameraRotations();
+```
+
+{% endcode %}
+
+Returns the rotations of the camera as an array `[yaw, pitch]`.
+
+### getFontHeight
+
+```java
+int fontHeight = render.getFontHeight();
+```
+
+Returns the height of the current font.
+
+### getFontWidth
+
+```java
+int fontWidth = render.getFontWidth(String text);
+```
+
+Returns the width of the specified text.
+
+### getPosition
+
+```java
+Vec3 position = render.getPosition();
+```
+
+Returns the position of the camera.
+
+### getRotations
+
+```java
+double[] rotations = render.getRotations();
+```
+
+Returns the rotations of the camera as an array `[yaw, pitch]`.
+
+### image
+
+```java
+render.image(Image image, float x, float y, float width, float height);
+```
+
+Renders an image on the screen.
+
+### isInView
+
+<pre class="language-java"><code class="lang-java"><strong>boolean isInView = render.isInView(Entity en);
+</strong></code></pre>
+
+Returns true if the specified entity is within the field of view of the camera.
+
+### item
+
+```java
+render.item(ItemStack item, float x, float y, float scale);
+```
+
+Renders an item on the screen.
+
+### line2D
+
+```java
+render.line2D(double startX, double startY, double endX, double endY, float lineWidth, int color);
+```
+
+Renders a line on the screen.
+
+### line3D
+
+```java
+render.line3D(Vec3 start, Vec3 end, float lineWidth, int color);
+render.line3D(double startX, double startY, double startZ, double endX, double endY, double endZ, float lineWidth, int color);
+```
+
+Renders a line in the world.
+
+### rect
+
+```java
+render.rect(float startX, float startY, float endX, float endY, int color);
+```
+
+Renders a rectangle on the screen.
+
+### resetEquippedProgress
+
+```java
+render.resetEquippedProgress();
+```
+
+Resets the equipped animation.
+
+### roundedRect
+
+```java
+render.roundedRect(float startX, float startY, float endX, float endY, float radius, int color);
+```
+
+Renders a rounded rectangle on the screen.
+
+### text2d
+
+```java
+render.text2d(String text, float x, float y, float scale, int color, boolean shadow);
+```
+
+Renders text on the screen.
+
+### text3d
+
+```java
+render.text3d(String text, Vec3 position, float scale, boolean shadow, boolean depth, int color);
+```
+
+Renders text in the world.
+
+### tracer
+
+```java
+render.tracer(Entity en, float lineWidth, int color, float partialTicks);
+```
+
+Renders a tracer line to a specified entity.
+
+### worldToScreen
+
+```java
+Vec3 screen = render.worldToScreen(double x, double y, double z, int scaleFactor, float partialTicks);
+```
+
+Returns the screen coordinates and screen depth.
+
+<table><thead><tr><th width="119">property</th><th width="117">description</th><th>type</th></tr></thead><tbody><tr><td>x</td><td>x axis</td><td>double</td></tr><tr><td>y</td><td>y axis</td><td>double</td></tr><tr><td>z</td><td>depth</td><td>double</td></tr></tbody></table>

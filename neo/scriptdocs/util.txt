@@ -1,0 +1,49 @@
+# util
+
+### color
+
+```java
+String coloredMessage = util.color(String message);
+```
+
+Replaces all color shortcuts with the color symbol.
+
+### colorSymbol
+
+```java
+String colorSymbol = util.colorSymbol;
+```
+
+Minecraft unicode character for color codes. Can be used for rendering minecraft coloring in render.text.
+
+### randomDouble
+
+```java
+int random = util.randomDouble(double min, double max);
+```
+
+Generates a random double between a specified range.
+
+### randomInt
+
+```java
+int random = util.randomInt(int min, int max);
+```
+
+Generates a random integer between a specified range.
+
+### round
+
+```java
+double round = util.round(double value, int decimals);
+```
+
+Rounds a double value to x significant figures.
+
+### strip
+
+```java
+String chatMessage = util.strip(String message);
+```
+
+Strips all color codes from a string.

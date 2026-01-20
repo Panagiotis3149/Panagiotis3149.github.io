@@ -1,0 +1,33 @@
+# tile entity
+
+{% hint style="warning" %}
+Required: world.getTileEntities();
+{% endhint %}
+
+{% content-ref url="objects" %}
+[objects](https://blowsy.gitbook.io/raven-b4/documentation/objects)
+{% endcontent-ref %}
+
+### getPosition
+
+```java
+Vec3 position = tileEntity.getPosition();
+```
+
+Returns the position of a tile entity.
+
+### getSkullData
+
+```java
+Object[] skullData = tileEntity.getSkullData();
+```
+
+Returns the metadata of a skull.
+
+| property | index | type   |
+| -------- | ----- | ------ |
+| type     | 0     | int    |
+| rotation | 1     | int    |
+| name     | 2     | String |
+| uuid     | 3     | String |
+  
