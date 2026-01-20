@@ -30,37 +30,36 @@ Applies a blur shader to all renders between `prepare` and `apply`.
 
 ### entity
 
-{% code overflow="wrap" %}
+
 
 ```java
 render.entity(Entity entity, int color, float partialTicks, boolean outline, boolean shade);
 ```
 
-{% endcode %}
-
+=
 Renders an entity outline.
 
 ### entityGui
 
-{% code overflow="wrap" %}
+
 
 ```java
 render.entityGui(Entity en, int x, int y, float mouseX, float mouseY, int scale);
 ```
 
-{% endcode %}
+
 
 Renders an entity model on the screen.
 
 ### getCameraRotations
 
-{% code overflow="wrap" %}
+
 
 ```java
 double[] rotations = render.getCameraRotations();
 ```
 
-{% endcode %}
+
 
 Returns the rotations of the camera as an array `[yaw, pitch]`.
 
@@ -193,3 +192,4 @@ Vec3 screen = render.worldToScreen(double x, double y, double z, int scaleFactor
 Returns the screen coordinates and screen depth.
 
 <table><thead><tr><th width="119">property</th><th width="117">description</th><th>type</th></tr></thead><tbody><tr><td>x</td><td>x axis</td><td>double</td></tr><tr><td>y</td><td>y axis</td><td>double</td></tr><tr><td>z</td><td>depth</td><td>double</td></tr></tbody></table>
+
